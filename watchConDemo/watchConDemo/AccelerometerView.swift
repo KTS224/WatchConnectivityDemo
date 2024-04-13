@@ -21,12 +21,12 @@ struct AccelerometerView: View {
     
     @State private var sleepCount = 0
     @State private var isDetected = false
-    @State private var isWearingAirPod = false
+    @State private var isWearingAirPods = false
     
     var body: some View {
         
         VStack{
-            if isWearingAirPod {
+            if isWearingAirPods {
                 Text("Pitch: \(pitch)")
                 Text("Yaw: \(yaw)")
                 Text("Roll: \(roll)")
@@ -48,10 +48,10 @@ struct AccelerometerView: View {
             self.motionManager.startDeviceMotionUpdates(to: self.queue) { (data: CMDeviceMotion?, error: Error?) in
                 guard let data = data else {
                     print("Error: \(error!)")
-                    isWearingAirPod = false
+                    isWearingAirPods = false
                     return
                 }
-                isWearingAirPod = true
+                isWearingAirPods = true
                 let attitude: CMAttitude = data.attitude
                 
                 print("pitch: \(attitude.pitch)")
