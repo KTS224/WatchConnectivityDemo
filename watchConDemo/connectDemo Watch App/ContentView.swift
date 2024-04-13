@@ -12,7 +12,6 @@ struct ContentView: View {
     var model = WatchConnectivityProvider()
     @ObservedObject var myTimer = MyTimer()
     @State private var timer: Timer?
-    @State var messsageText = "경과 시간"
     @State private var heartRate: Double? = nil
     let healthStore = HKHealthStore()
     
@@ -25,22 +24,6 @@ struct ContentView: View {
             }
             
             Text("\(self.myTimer.value)")
-            
-//            HStack {
-//                TextField("Input your message", text: $messsageText)
-//                Button {
-//                    self.model.session.sendMessage(["message" : "\(self.messsageText): \(self.myTimer.value) "], replyHandler: nil) { error in
-//                        /**
-//                         다음의 상황에서 오류가 발생할 수 있음
-//                         -> property-list 데이터 타입이 아닐 때
-//                         -> watchOS가 reachable 상태가 아닌데 전송할 때
-//                         */
-//                        print(error.localizedDescription)
-//                    }
-//                } label: {
-//                    Text("Send")
-//                }
-//            }
         }
         .onAppear {
             requestAuthorization()
@@ -48,13 +31,14 @@ struct ContentView: View {
             
             // MARK: self.model.session.sendMessage 한번에 2개 이상 하면 업데이트가 0-value 로 시간차가 이상하게 되는 오류가 있음.
             self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-//                self.model.session.sendMessage(["message" : "\(self.messsageText): \(self.myTimer.value)"], replyHandler: nil) { error in
+                // MARK: 앱 실행중에 전송 매서드
+//                self.model.session.sendMessage(["heartRate" : Int(self.heartRate ?? 100)], replyHandler: nil) { error in
 //                    print(error.localizedDescription)
 //                }
                 
-                self.model.session.sendMessage(["heartRate" : Int(self.heartRate ?? 0)], replyHandler: nil) { error in
-                    print(error.localizedDescription)
-                }
+                // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
+                self.model.session.transferUserInfo(["heartRate" : Int(self.heartRate ?? 100)])
+                print(Int(self.heartRate ?? 0))
             }
         }
     }
@@ -65,12 +49,22 @@ struct ContentView: View {
         healthStore.requestAuthorization(toShare: nil, read: typesToRead) { (success, error) in
             if let error = error {
                 print("Error requesting health kit authorization: \(error.localizedDescription)")
+            } else {
+                print("requestAuthorization SUCCESS")
             }
         }
     }
     
     func startHeartRateStreaming() {
         guard let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate) else { return }
+        
+        healthStore.enableBackgroundDelivery(for: heartRateType, frequency: .immediate) { (success, error) in
+            if let error = error {
+                print("Error enabling background delivery for heart rate: \(error.localizedDescription)")
+            } else {
+                print("SUCCESS background healthkit")
+            }
+        }
         
         let query = HKObserverQuery(sampleType: heartRateType, predicate: nil) { (query, completionHandler, error) in
             if let error = error {
@@ -89,11 +83,7 @@ struct ContentView: View {
         }
         
         healthStore.execute(query)
-        healthStore.enableBackgroundDelivery(for: heartRateType, frequency: .immediate) { (success, error) in
-            if let error = error {
-                print("Error enabling background delivery for heart rate: \(error.localizedDescription)")
-            }
-        }
+        
     }
     
     func fetchLatestHeartRateSample(completion: @escaping (HKQuantitySample?) -> Void) {

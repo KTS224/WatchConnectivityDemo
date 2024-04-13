@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,6 +17,7 @@
 		EB30F0B32BC442B400719A30 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB30F0B22BC442B400719A30 /* Preview Assets.xcassets */; };
 		EB30F0B62BC442B400719A30 /* connectDemo Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = EB30F0A92BC442B200719A30 /* connectDemo Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EB30F0BC2BC445AF00719A30 /* ConnectivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */; };
+		EB6FDD232BCAC87B00015E1D /* TESTVIEW.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD222BCAC87B00015E1D /* TESTVIEW.swift */; };
 		EBCA93342BC6EC6A0021097C /* WatchConnectivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93332BC6EC6A0021097C /* WatchConnectivityProvider.swift */; };
 		EBCA93362BC6EC9D0021097C /* WatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93352BC6EC9D0021097C /* WatchTimer.swift */; };
 		EBCA93382BC6F15F0021097C /* PhoneTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93372BC6F15F0021097C /* PhoneTimer.swift */; };
@@ -64,6 +65,7 @@
 		EB30F0AF2BC442B400719A30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB30F0B22BC442B400719A30 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityProvider.swift; sourceTree = "<group>"; };
+		EB6FDD222BCAC87B00015E1D /* TESTVIEW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTVIEW.swift; sourceTree = "<group>"; };
 		EBC330012BC68DD500FB5220 /* watchConDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = watchConDemo.entitlements; sourceTree = "<group>"; };
 		EBC330022BC68DF300FB5220 /* connectDemo Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "connectDemo Watch App.entitlements"; sourceTree = "<group>"; };
 		EBCA93332BC6EC6A0021097C /* WatchConnectivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityProvider.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				EBC330022BC68DF300FB5220 /* connectDemo Watch App.entitlements */,
 				EB30F0AB2BC442B200719A30 /* connectDemoApp.swift */,
 				EB30F0AD2BC442B200719A30 /* ContentView.swift */,
+				EB6FDD222BCAC87B00015E1D /* TESTVIEW.swift */,
 				EBCA93332BC6EC6A0021097C /* WatchConnectivityProvider.swift */,
 				EBCA93352BC6EC9D0021097C /* WatchTimer.swift */,
 				EB30F0AF2BC442B400719A30 /* Assets.xcassets */,
@@ -225,7 +228,7 @@
 				};
 			};
 			buildConfigurationList = EB30F08D2BC4424500719A30 /* Build configuration list for PBXProject "watchConDemo" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -288,6 +291,7 @@
 			files = (
 				EB30F0AE2BC442B200719A30 /* ContentView.swift in Sources */,
 				EB30F0AC2BC442B200719A30 /* connectDemoApp.swift in Sources */,
+				EB6FDD232BCAC87B00015E1D /* TESTVIEW.swift in Sources */,
 				EBCA93342BC6EC6A0021097C /* WatchConnectivityProvider.swift in Sources */,
 				EBCA93362BC6EC9D0021097C /* WatchTimer.swift in Sources */,
 			);

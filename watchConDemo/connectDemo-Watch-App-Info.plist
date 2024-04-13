@@ -3,8 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>UIBackgroundModes</key>
-	<array/>
+	<array>
+		<string>location</string>
+	</array>
 	<key>WKBackgroundModes</key>
-	<array/>
+	<array>
+		<string>workout-processing</string>
+	</array>
 </dict>
 </plist>
