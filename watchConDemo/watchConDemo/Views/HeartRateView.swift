@@ -21,6 +21,7 @@ struct HeartRateView: View {
             Spacer()
             
             Text("\(model.allHeartRate)")
+                .foregroundStyle(.gray)
         }
     }
 }
