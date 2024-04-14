@@ -17,6 +17,7 @@
 		EB30F0B32BC442B400719A30 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB30F0B22BC442B400719A30 /* Preview Assets.xcassets */; };
 		EB30F0B62BC442B400719A30 /* connectDemo Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = EB30F0A92BC442B200719A30 /* connectDemo Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EB30F0BC2BC445AF00719A30 /* ConnectivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */; };
+		EB685E8C2BCBD73100F0FA20 /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB685E8B2BCBD73100F0FA20 /* AudioSessionManager.swift */; };
 		EB6FDD232BCAC87B00015E1D /* TESTVIEW.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD222BCAC87B00015E1D /* TESTVIEW.swift */; };
 		EB6FDD272BCAF92A00015E1D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD262BCAF92A00015E1D /* LoginView.swift */; };
 		EB6FDD292BCAFD7800015E1D /* DetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD282BCAFD7800015E1D /* DetectionView.swift */; };
@@ -67,6 +68,7 @@
 		EB30F0AF2BC442B400719A30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB30F0B22BC442B400719A30 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityProvider.swift; sourceTree = "<group>"; };
+		EB685E8B2BCBD73100F0FA20 /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		EB6FDD222BCAC87B00015E1D /* TESTVIEW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTVIEW.swift; sourceTree = "<group>"; };
 		EB6FDD262BCAF92A00015E1D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		EB6FDD282BCAFD7800015E1D /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				EB30F0952BC4424500719A30 /* watchConDemoApp.swift */,
 				EBCA93372BC6F15F0021097C /* PhoneTimer.swift */,
 				EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */,
+				EB685E8B2BCBD73100F0FA20 /* AudioSessionManager.swift */,
 				EB6FDD242BCAF8FC00015E1D /* Views */,
 				EBCA93422BC6F93B0021097C /* Click.mp3 */,
 				EBCA93402BC6F9330021097C /* Knock.mp3 */,
@@ -306,6 +309,7 @@
 				EB30F0BC2BC445AF00719A30 /* ConnectivityProvider.swift in Sources */,
 				EBCA933B2BC6F8D10021097C /* AccelerometerView.swift in Sources */,
 				EBCA933D2BC6F8F80021097C /* SoundManager.swift in Sources */,
+				EB685E8C2BCBD73100F0FA20 /* AudioSessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

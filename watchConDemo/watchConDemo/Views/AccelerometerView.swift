@@ -10,6 +10,7 @@ import CoreMotion
 import Combine
 
 struct AccelerometerView: View {
+    @ObservedObject var audioSessionManager = AudioSessionManager()
     private let soundManager = SoundSetting.instance
     let hapticManager = HapticManager.instance
     private var motionManager = CMHeadphoneMotionManager()
@@ -21,12 +22,12 @@ struct AccelerometerView: View {
     
     @State private var sleepCount = 0
     @State private var isDetected = false
-    @State private var isWearingAirPods = false
+//    @State private var isWearingAirPods = false
     
     var body: some View {
         
         VStack{
-            if isWearingAirPods {
+            if audioSessionManager.isAirPodsConnected {
                 Text("Pitch: \(pitch)")
                 Text("Yaw: \(yaw)")
                 Text("Roll: \(roll)")
@@ -48,10 +49,8 @@ struct AccelerometerView: View {
             self.motionManager.startDeviceMotionUpdates(to: self.queue) { (data: CMDeviceMotion?, error: Error?) in
                 guard let data = data else {
                     print("Error: \(error!)")
-                    isWearingAirPods = false
                     return
                 }
-                isWearingAirPods = true
                 let attitude: CMAttitude = data.attitude
                 
                 print("pitch: \(attitude.pitch)")
