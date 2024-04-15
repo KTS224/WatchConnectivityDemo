@@ -10,7 +10,7 @@ import SwiftUI
 struct LoginView: View {
     var body: some View {
         ZStack {
-            Color.green.opacity(0.5).ignoresSafeArea()
+            Color.orange.opacity(0.15).ignoresSafeArea()
             VStack {
                 Spacer()
                 

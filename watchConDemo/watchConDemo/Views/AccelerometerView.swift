@@ -34,7 +34,22 @@ struct AccelerometerView: View {
                 Divider()
                 Text("Sleep Count: \(sleepCount)")
             } else {
-                Text("에어팟을 착용해주세요.")
+                Image(systemName: "airpodspro")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50)
+                    .padding()
+                Text("AirPods에 연결")
+                    .bold()
+                    .padding(.bottom, 5)
+                
+                Group {
+                    Text("모션 센서가 있는 AirPods Pro,")
+                        .padding(.bottom, 1)
+                    Text("AirPods Max, AirPods(3세대)와 호환됩니다.")
+                }
+                .font(.caption2)
+                .foregroundStyle(.gray)
             }
             
             Spacer()

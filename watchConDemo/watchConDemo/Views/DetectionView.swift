@@ -10,7 +10,7 @@ import SwiftUI
 struct DetectionView: View {
     var body: some View {
         ZStack {
-            Color.green.opacity(0.5).ignoresSafeArea()
+            Color.orange.opacity(0.15).ignoresSafeArea()
             VStack {
                 Spacer()
                 AccelerometerView()
@@ -21,6 +21,7 @@ struct DetectionView: View {
                     print("공부 시작")
                 }, label: {
                     Text("공부 시작")
+                        .bold()
                         .frame(width: UIScreen.main.bounds.width - 90, height: 30)
                 })
                 .buttonStyle(.borderedProminent)
