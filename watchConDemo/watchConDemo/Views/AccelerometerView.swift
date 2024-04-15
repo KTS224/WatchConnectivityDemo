@@ -22,26 +22,48 @@ struct AccelerometerView: View {
     
     @State private var sleepCount = 0
     @State private var isDetected = false
-//    @State private var isWearingAirPods = false
     
     var body: some View {
         
         VStack{
             if audioSessionManager.isAirPodsConnected {
-                Text("Pitch: \(pitch)")
-                Text("Yaw: \(yaw)")
-                Text("Roll: \(roll)")
-                Divider()
-                Text("Sleep Count: \(sleepCount)")
+//                Text("Pitch: \(pitch)")
+//                Text("Yaw: \(yaw)")
+//                Text("Roll: \(roll)")
+//                Divider()
+//                Text("Sleep Count: \(sleepCount)")
+                Group {
+                    Image(systemName: "airpodspro")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50)
+                        .padding()
+                    Text("AirPods에 연결")
+                        .bold()
+                        .padding(.bottom, 5)
+                }
+                .foregroundStyle(.green)
+                Group {
+                    Text("")
+                        .padding(.bottom, 1)
+                    Text("")
+                }
+                .font(.caption2)
+                .foregroundStyle(.gray)
+                
+                
             } else {
-                Image(systemName: "airpodspro")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 50)
-                    .padding()
-                Text("AirPods에 연결")
-                    .bold()
-                    .padding(.bottom, 5)
+                Group {
+                    Image(systemName: "airpodspro")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50)
+                        .padding()
+                    Text("AirPods에 연결")
+                        .bold()
+                        .padding(.bottom, 5)
+                }
+                .foregroundStyle(.red)
                 
                 Group {
                     Text("모션 센서가 있는 AirPods Pro,")
