@@ -33,6 +33,7 @@ struct HeartRateView: View {
                 Button(action: {
                     print("중단 버튼 누름")
                     model.sendReset()
+                    model.allHeartRate.removeAll()
                 }, label: {
                     Text("중단하기")
                         .bold()
