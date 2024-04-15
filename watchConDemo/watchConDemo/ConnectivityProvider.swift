@@ -13,10 +13,14 @@ import WatchConnectivity
 class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     var session: WCSession
     @Published var messageText = "" // iOS 앱에서 수신한 메세지를 화면에 보여주기 위한 문자열
-//    @Published var number = ""
     @Published var heartRate = 0
-    @Published var heartRateAvg = 0
     @Published var allHeartRate: [Int] = []
+    
+    
+    
+    @Published var buttonEnabled: Bool = false
+    
+    
     
     init(session: WCSession = .default) {
         self.session = session
@@ -24,6 +28,24 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
         session.delegate = self
         session.activate()
     }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        if let buttonPressed = message["buttonPressed"] as? Bool, buttonPressed {
+            DispatchQueue.main.async {
+                self.buttonEnabled = true
+            }
+        }
+    }
+    
+    func sendReset() {
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(["reset": true], replyHandler: nil, errorHandler: { error in
+                print("Error sending reset: \(error)")
+            })
+        }
+        self.buttonEnabled = false
+    }
+    
     
     /**
      델리게이트 메서드
@@ -33,16 +55,16 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     
     //수정하기
     // 다른 기기의 세션에서 sendMessage() 메서드로 메세지를 받았을 때 호출되는 메서드
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        DispatchQueue.main.async {
-            // 받은 메세지에서 원하는 Key값(여기서는 "message")으로 메세지 String을 가져온다.
-            // messageText는 Published 프로퍼티이기 때문에 DispatchQueue.main.async로 실행해줘야함
-            self.heartRate = message["heartRate"] as? Int ?? 0
-//            self.messageText = message["message"] as? String ?? "Unknown"
-        }
-        
-        allHeartRate.append(heartRate)
-    }
+//    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+//        DispatchQueue.main.async {
+//            // 받은 메세지에서 원하는 Key값(여기서는 "message")으로 메세지 String을 가져온다.
+//            // messageText는 Published 프로퍼티이기 때문에 DispatchQueue.main.async로 실행해줘야함
+//            self.heartRate = message["heartRate"] as? Int ?? 0
+////            self.messageText = message["message"] as? String ?? "Unknown"
+//        }
+//        
+//        allHeartRate.append(heartRate)
+//    }
     
     //
     // 다른 기기의 세션으로부터 transferUserInfo() 메서드로 데이터를 받았을 때 호출되는 메서드

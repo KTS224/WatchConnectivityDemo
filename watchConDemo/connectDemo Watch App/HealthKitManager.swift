@@ -1,8 +1,8 @@
 //
-//  TESTVIEW.swift
+//  HealthKitManager.swift
 //  connectDemo Watch App
 //
-//  Created by 김태성 on 4/13/24.
+//  Created by 김태성 on 4/15/24.
 //
 
 import Foundation
@@ -37,6 +37,34 @@ class HealthKitManager: NSObject, ObservableObject, HKWorkoutSessionDelegate {
                 print("HealthKit authorization denied.")
             }
         }
+    }
+    
+    func stopWorkout() {
+        // 운동 세션 존재 여부 확인
+        guard let session = workoutSession else {
+            print("No workout session exists.")
+            return
+        }
+        
+        // 운동 세션 상태 확인 및 종료
+        if session.state == .running || session.state == .paused {
+            // 운동 세션 종료
+            healthStore?.end(session)
+
+//            // 세션 종료 후 필요한 데이터 처리
+//            saveWorkoutData(session)
+
+            // 세션 종료 로그
+            print("Workout session ended successfully.")
+        } else {
+            print("Workout session is not running or paused, so it cannot be stopped.")
+        }
+//
+//        // 심박수 구독 중단 (옵션)
+//        stopHeartRateSubscription()
+
+        // 세션 참조 해제
+        workoutSession = nil
     }
 
     func startWorkout() {
@@ -80,37 +108,4 @@ class HealthKitManager: NSObject, ObservableObject, HKWorkoutSessionDelegate {
             self.heartRate = Int(heartRateSamples.last?.quantity.doubleValue(for: HKUnit(from: "count/min")) ?? 0)
         }
     }
-}
-
-
-struct TESTVIEW: View {
-    @StateObject private var healthKitManager = HealthKitManager()
-    var model = WatchConnectivityProvider()
-    @ObservedObject var myTimer = MyTimer()
-    @State private var timer: Timer?
-
-    var body: some View {
-        VStack {
-            Text("Heart Rate: \(healthKitManager.heartRate) bpm")
-        }
-        .onAppear {
-            healthKitManager.startWorkout()
-            
-            // MARK: self.model.session.sendMessage 한번에 2개 이상 하면 업데이트가 0-value 로 시간차가 이상하게 되는 오류가 있음.
-            self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                // MARK: 앱 실행중에 전송 매서드
-//                self.model.session.sendMessage(["heartRate" : Int(self.heartRate ?? 100)], replyHandler: nil) { error in
-//                    print(error.localizedDescription)
-//                }
-                
-                // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
-                self.model.session.transferUserInfo(["heartRate" : Int(healthKitManager.heartRate)])
-                print(Int(healthKitManager.heartRate))
-            }
-        }
-    }
-}
-
-#Preview {
-    TESTVIEW()
 }

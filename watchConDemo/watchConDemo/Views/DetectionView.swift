@@ -17,14 +17,14 @@ struct DetectionView: View {
                 Spacer()
                 HeartRateView()
                 
-                Button(action: {
-                    print("공부 시작")
-                }, label: {
-                    Text("공부 시작")
-                        .bold()
-                        .frame(width: UIScreen.main.bounds.width - 90, height: 30)
-                })
-                .buttonStyle(.borderedProminent)
+//                Button(action: {
+//                    print("공부 시작")
+//                }, label: {
+//                    Text("공부 시작")
+//                        .bold()
+//                        .frame(width: UIScreen.main.bounds.width - 90, height: 30)
+//                })
+//                .buttonStyle(.borderedProminent)
             }
         }
     }
