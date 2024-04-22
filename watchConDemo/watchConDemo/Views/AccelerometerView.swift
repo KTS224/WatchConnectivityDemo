@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreMotion
 import Combine
+import UniformTypeIdentifiers
 
 struct AccelerometerView: View {
     @ObservedObject var audioSessionManager = AudioSessionManager()
@@ -89,30 +90,50 @@ struct AccelerometerView: View {
                     return
                 }
                 let attitude: CMAttitude = data.attitude
+//            Quaternion:
+//                x: \(data.attitude.quaternion.x)
+//                y: \(data.attitude.quaternion.y)
+//                z: \(data.attitude.quaternion.z)
+//                w: \(data.attitude.quaternion.w)
+//            Attitude:
+//                pitch: \(data.attitude.pitch)
+//                roll: \(data.attitude.roll)
+//                yaw: \(data.attitude.yaw)
+//            Gravitational Acceleration:
+//                x: \(data.gravity.x)
+//                y: \(data.gravity.y)
+//                z: \(data.gravity.z)
+//            Rotation Rate:
+//                x: \(data.rotationRate.x)
+//                y: \(data.rotationRate.y)
+//                z: \(data.rotationRate.z)
                 
-                print("pitch: \(attitude.pitch)")
-                print("yaw: \(attitude.yaw)")
-                print("roll: \(attitude.roll)")
+                print("""
+            Acceleration:
+                x: \(data.userAcceleration.x)
+                y: \(data.userAcceleration.y)
+                z: \(data.userAcceleration.z)
+            """)
                 
-                DispatchQueue.main.async {
-                    self.pitch = Int(attitude.pitch * 10)
-                    self.yaw = Int(attitude.yaw * 10)
-                    self.roll = Int(attitude.roll * 10)
-                    
-                    if self.pitch <= -10 {
-                        if !isDetected {
-                            soundManager.playSound(sound: .Knock)
-                        }
-                        
-                        sleepCount += 1
-                        hapticManager.notification(type: .error)
-//                        hapticManager.impact(style: .heavy)
-                        isDetected = true
-                    } else {
-                        isDetected = false
-                        sleepCount = 0
-                    }
-                }
+//                DispatchQueue.main.async {
+//                    self.pitch = Int(attitude.pitch * 10)
+//                    self.yaw = Int(attitude.yaw * 10)
+//                    self.roll = Int(attitude.roll * 10)
+//                    
+//                    if self.pitch <= -10 {
+//                        if !isDetected {
+//                            soundManager.playSound(sound: .Knock)
+//                        }
+//                        
+//                        sleepCount += 1
+//                        hapticManager.notification(type: .error)
+////                        hapticManager.impact(style: .heavy)
+//                        isDetected = true
+//                    } else {
+//                        isDetected = false
+//                        sleepCount = 0
+//                    }
+//                }
             }
         }
     }

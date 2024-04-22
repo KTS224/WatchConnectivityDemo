@@ -22,6 +22,7 @@
 		EB6FDD232BCAC87B00015E1D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD222BCAC87B00015E1D /* ContentView.swift */; };
 		EB6FDD272BCAF92A00015E1D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD262BCAF92A00015E1D /* LoginView.swift */; };
 		EB6FDD292BCAFD7800015E1D /* DetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD282BCAFD7800015E1D /* DetectionView.swift */; };
+		EBB6C5D72BCE5C530034737E /* SleepJudgment.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB6C5D62BCE5C530034737E /* SleepJudgment.swift */; };
 		EBCA93342BC6EC6A0021097C /* WatchConnectivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93332BC6EC6A0021097C /* WatchConnectivityProvider.swift */; };
 		EBCA93362BC6EC9D0021097C /* WatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93352BC6EC9D0021097C /* WatchTimer.swift */; };
 		EBCA93382BC6F15F0021097C /* PhoneTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93372BC6F15F0021097C /* PhoneTimer.swift */; };
@@ -74,6 +75,7 @@
 		EB6FDD222BCAC87B00015E1D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EB6FDD262BCAF92A00015E1D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		EB6FDD282BCAFD7800015E1D /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
+		EBB6C5D62BCE5C530034737E /* SleepJudgment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepJudgment.swift; sourceTree = "<group>"; };
 		EBC330012BC68DD500FB5220 /* watchConDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = watchConDemo.entitlements; sourceTree = "<group>"; };
 		EBC330022BC68DF300FB5220 /* connectDemo Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "connectDemo Watch App.entitlements"; sourceTree = "<group>"; };
 		EBCA93332BC6EC6A0021097C /* WatchConnectivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityProvider.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				EBCA93372BC6F15F0021097C /* PhoneTimer.swift */,
 				EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */,
 				EB685E8B2BCBD73100F0FA20 /* AudioSessionManager.swift */,
+				EB50DC262BCE7145007FB23A /* Models */,
 				EB6FDD242BCAF8FC00015E1D /* Views */,
 				EBCA93422BC6F93B0021097C /* Click.mp3 */,
 				EBCA93402BC6F9330021097C /* Knock.mp3 */,
@@ -175,6 +178,14 @@
 				EB30F0B22BC442B400719A30 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EB50DC262BCE7145007FB23A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EBB6C5D62BCE5C530034737E /* SleepJudgment.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		EB6FDD242BCAF8FC00015E1D /* Views */ = {
@@ -307,6 +318,7 @@
 				EBCA93462BC6FC1C0021097C /* ContentView.swift in Sources */,
 				EB6FDD272BCAF92A00015E1D /* LoginView.swift in Sources */,
 				EBCA933F2BC6F9070021097C /* HapticManager.swift in Sources */,
+				EBB6C5D72BCE5C530034737E /* SleepJudgment.swift in Sources */,
 				EBCA93382BC6F15F0021097C /* PhoneTimer.swift in Sources */,
 				EB6FDD292BCAFD7800015E1D /* DetectionView.swift in Sources */,
 				EB30F0BC2BC445AF00719A30 /* ConnectivityProvider.swift in Sources */,
