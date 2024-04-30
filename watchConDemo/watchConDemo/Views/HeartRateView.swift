@@ -10,7 +10,6 @@ import SwiftUI
 struct HeartRateView: View {
     @ObservedObject var model = ConnectivityProvider()
     @ObservedObject var myTimer = MyTimer()
-    @State private var sleepJugements: [SleepJudgment] = []
     
     var body: some View {
         VStack {

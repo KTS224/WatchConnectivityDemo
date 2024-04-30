@@ -23,6 +23,13 @@ struct AccelerometerView: View {
     
     @State private var sleepCount = 0
     @State private var isDetected = false
+    @State private var timer: Timer?
+    
+    let userInfo = UserInfo.shared
+    
+    @State private var accelerationXs: [Double] = []
+    @State private var accelerationYs: [Double] = []
+    @State private var accelerationZs: [Double] = []
     
     var body: some View {
         
@@ -75,6 +82,15 @@ struct AccelerometerView: View {
                 .foregroundStyle(.gray)
             }
             
+            Button {
+                print(userInfo.accelerationX)
+                print(userInfo.accelerationY)
+                print(userInfo.accelerationZ)
+            } label: {
+                Text("유저 인포 가속도 보여줘!")
+            }
+
+            
             Spacer()
         }
         .background(isDetected ? .red : .clear)
@@ -84,36 +100,46 @@ struct AccelerometerView: View {
         // TODO: 에어팟 착용 감지 하기
         .onAppear {
             print("ON APPEAR")
+            
+            var accelerationX: Double = 0
+            var accelerationY: Double = 0
+            var accelerationZ: Double = 0
+            
             self.motionManager.startDeviceMotionUpdates(to: self.queue) { (data: CMDeviceMotion?, error: Error?) in
                 guard let data = data else {
                     print("Error: \(error!)")
                     return
                 }
                 let attitude: CMAttitude = data.attitude
-//            Quaternion:
-//                x: \(data.attitude.quaternion.x)
-//                y: \(data.attitude.quaternion.y)
-//                z: \(data.attitude.quaternion.z)
-//                w: \(data.attitude.quaternion.w)
-//            Attitude:
-//                pitch: \(data.attitude.pitch)
-//                roll: \(data.attitude.roll)
-//                yaw: \(data.attitude.yaw)
-//            Gravitational Acceleration:
-//                x: \(data.gravity.x)
-//                y: \(data.gravity.y)
-//                z: \(data.gravity.z)
-//            Rotation Rate:
-//                x: \(data.rotationRate.x)
-//                y: \(data.rotationRate.y)
-//                z: \(data.rotationRate.z)
+
+                accelerationX = data.userAcceleration.x
+                accelerationY = data.userAcceleration.y
+                accelerationZ = data.userAcceleration.z
                 
-                print("""
-            Acceleration:
-                x: \(data.userAcceleration.x)
-                y: \(data.userAcceleration.y)
-                z: \(data.userAcceleration.z)
-            """)
+                //            Quaternion:
+                //                x: \(data.attitude.quaternion.x)
+                //                y: \(data.attitude.quaternion.y)
+                //                z: \(data.attitude.quaternion.z)
+                //                w: \(data.attitude.quaternion.w)
+                //            Attitude:
+                //                pitch: \(data.attitude.pitch)
+                //                roll: \(data.attitude.roll)
+                //                yaw: \(data.attitude.yaw)
+                //            Gravitational Acceleration:
+                //                x: \(data.gravity.x)
+                //                y: \(data.gravity.y)
+                //                z: \(data.gravity.z)
+                //            Rotation Rate:
+                //                x: \(data.rotationRate.x)
+                //                y: \(data.rotationRate.y)
+                //                z: \(data.rotationRate.z)
+                                
+//                                print("""
+//                            Acceleration:
+//                                x: \(data.userAcceleration.x)
+//                                y: \(data.userAcceleration.y)
+//                                z: \(data.userAcceleration.z)
+//                            """)
                 
 //                DispatchQueue.main.async {
 //                    self.pitch = Int(attitude.pitch * 10)
@@ -134,6 +160,28 @@ struct AccelerometerView: View {
 //                        sleepCount = 0
 //                    }
 //                }
+            }
+            
+            self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+//                    var formatter = DateFormatter()
+//                    formatter.dateFormat = "HH:mm:ss"
+//                    var current_date_time = formatter.string(from: Date())
+                
+//                print(accelerationX)
+//                print(accelerationY)
+//                print(accelerationZ)
+                if audioSessionManager.isAirPodsConnected {
+                    print("airPods Connected..")
+                    self.accelerationXs.append(accelerationX)
+                    self.accelerationYs.append(accelerationY)
+                    self.accelerationZs.append(accelerationZ)
+                }
+                
+                // 가속도 절댓값의 평균 보다 낮은 값이 3분 이상 지속되면 수면 이라고 판단한다.
+                
+                userInfo.accelerationX = self.accelerationXs
+                userInfo.accelerationY = self.accelerationYs
+                userInfo.accelerationZ = self.accelerationZs
             }
         }
     }
