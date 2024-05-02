@@ -22,7 +22,7 @@ struct AccelerometerView: View {
     @State private var roll = 0
     
     @State private var sleepCount = 0
-    @State private var isDetected = false
+//    @State private var isDetected = false
     @State private var timer: Timer?
     
     let userInfo = UserInfo.shared
@@ -38,6 +38,7 @@ struct AccelerometerView: View {
     @State private var sleepDetectArrayY: [Bool] = []
     @State private var sleepDetectArrayZ: [Bool] = []
     @State private var isFellASleep: Bool = false
+    @State private var FellASleepCounter: Double = 0
     
     var body: some View {
         
@@ -100,18 +101,18 @@ struct AccelerometerView: View {
                 }
             }
             
-            Button {
-                print(userInfo.accelerationX)
-                print(userInfo.accelerationY)
-                print(userInfo.accelerationZ)
-            } label: {
-                Text("유저 인포 가속도 보여줘")
-            }
+//            Button {
+//                print(userInfo.accelerationX)
+//                print(userInfo.accelerationY)
+//                print(userInfo.accelerationZ)
+//            } label: {
+//                Text("유저 인포 가속도 보여줘")
+//            }
 
-            
+
             Spacer()
         }
-        .background(isDetected ? .red : .clear)
+        .background(isFellASleep ? .red.opacity(FellASleepCounter) : .clear)
         //Vstack
         // TODO: 실시간 업데이트 주기 정해주기
         // TODO: 백그라운드에서 실행 가능하게 하기
@@ -229,6 +230,10 @@ struct AccelerometerView: View {
                 if spentTime >= 121 {
                     /// 가속도 센서의 x, y, z 값 모두 움직임이 감지되지 않음이 지속될 경우 isFellASleep은 true 가 된다.
                     isFellASleep = wholeSleepDetectBy(sleepDetectArrayX) && wholeSleepDetectBy(sleepDetectArrayY) && wholeSleepDetectBy(sleepDetectArrayZ)
+                    
+                    /// 진동줄지 얼마나 잠들었는지 판단하기 위한 메서드
+                    decideWhetherToVibrateOrNot(isFellASleep)
+                    countHowManyTimesYouFellASleep(isFellASleep)
                 }
             }
         }
@@ -256,11 +261,26 @@ struct AccelerometerView: View {
         print(수면연속카운트)
         if 수면연속카운트 >= 55 {
             print("진짜 잔다")
-            hapticManager.notification(type: .error)
             return true
         } else {
+            FellASleepCounter = 0
             print("진짜 안잔다")
             return false
+        }
+    }
+    
+    // TODO: 지속시간에 따라 진동 세기 변경하기
+    func decideWhetherToVibrateOrNot(_ isFellASleep: Bool) {
+        if isFellASleep {
+            hapticManager.notification(type: .error)
+        }
+    }
+    
+    func countHowManyTimesYouFellASleep(_ isFellASleep: Bool) {
+        if isFellASleep {
+            self.FellASleepCounter += 0.01
+        } else {
+            self.FellASleepCounter = 0
         }
     }
 }
