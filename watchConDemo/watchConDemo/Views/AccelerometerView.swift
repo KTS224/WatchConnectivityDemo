@@ -101,22 +101,20 @@ struct AccelerometerView: View {
                 }
             }
             
-//            Button {
-//                print(userInfo.accelerationX)
-//                print(userInfo.accelerationY)
-//                print(userInfo.accelerationZ)
-//            } label: {
-//                Text("유저 인포 가속도 보여줘")
-//            }
+            Button {
+                print(userInfo.accelerationX)
+                print(userInfo.accelerationY)
+                print(userInfo.accelerationZ)
+            } label: {
+                Text("유저 인포 가속도 보여줘")
+            }
 
 
             Spacer()
         }
         .background(isFellASleep ? .red.opacity(FellASleepCounter) : .clear)
         //Vstack
-        // TODO: 실시간 업데이트 주기 정해주기
         // TODO: 백그라운드에서 실행 가능하게 하기
-        // TODO: 에어팟 착용 감지 하기
         .onAppear {
             print("ON APPEAR")
             
@@ -181,6 +179,8 @@ struct AccelerometerView: View {
 //                }
             }
             
+            // withTimeInterval -> 현재 10Hz
+            ///1 Hz는 일정한 주기로 반복되는 어떤 현상에 대하여 '초당 주기가 1회'라는 것을 의미한다
             self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
                 self.spentTime += 1
 //                    var formatter = DateFormatter()
@@ -215,7 +215,9 @@ struct AccelerometerView: View {
                 /// 시작하고 1분 뒤부터 1초마다 실행한다.
                 /// 1분이 지났는지 알아야한다 -> 시작 하면 타이머 on
                 /// 현재는 시간 10배 빠르게 되어있음
-                // TODO: x y z 좌표 모두 사용하기.
+                // TODO: x y z 좌표 모두 사용하기. 완료
+                // TODO: 이동하거나 과하게 움직일 경우 가속도의 평균값이 과하게 커질수 있기때문에 적절한 한계값을 추가하여 그 이상 넘어갔을 경우는 낮춰서 넣어야함. ex) 가속도값이 3 이상일 경우 3으로 고정한다.
+                //       또한 너무 오랜시간 지속하면 평균값이 낮아질수있다.? ㅁㄹㅁㄹ나중에 생각한다.
                 
                 userInfo.accelerationX = self.accelerationXs
                 userInfo.accelerationY = self.accelerationYs
