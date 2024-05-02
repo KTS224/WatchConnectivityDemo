@@ -256,6 +256,7 @@ struct AccelerometerView: View {
         print(수면연속카운트)
         if 수면연속카운트 >= 55 {
             print("진짜 잔다")
+            hapticManager.notification(type: .error)
             return true
         } else {
             print("진짜 안잔다")
