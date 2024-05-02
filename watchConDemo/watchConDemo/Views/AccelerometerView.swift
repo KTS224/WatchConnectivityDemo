@@ -31,10 +31,18 @@ struct AccelerometerView: View {
     @State private var accelerationYs: [Double] = []
     @State private var accelerationZs: [Double] = []
     
+    @State private var spentTime: Int = 0
+    
+    // 연속 60개중 true가 55개 이상이면 자는거다. (뒤척임 5개 제외함)
+    @State private var sleepDetectArray: [Bool] = []
+    @State private var isFellASleep: Bool = false
+    
     var body: some View {
         
         VStack{
             if audioSessionManager.isAirPodsConnected {
+                Text(isFellASleep ? "자고있다." : "안자는것같다..")
+                Text("경과 시간 : \(spentTime)초")
 //                Text("Pitch: \(pitch)")
 //                Text("Yaw: \(yaw)")
 //                Text("Roll: \(roll)")
@@ -58,6 +66,9 @@ struct AccelerometerView: View {
                 }
                 .font(.caption2)
                 .foregroundStyle(.gray)
+                .onAppear {
+                    spentTime = 0
+                }
                 
                 
             } else {
@@ -73,6 +84,8 @@ struct AccelerometerView: View {
                 }
                 .foregroundStyle(.red)
                 
+                
+                
                 Group {
                     Text("모션 센서가 있는 AirPods Pro,")
                         .padding(.bottom, 1)
@@ -80,6 +93,9 @@ struct AccelerometerView: View {
                 }
                 .font(.caption2)
                 .foregroundStyle(.gray)
+                .onAppear {
+                    spentTime = 0
+                }
             }
             
             Button {
@@ -87,7 +103,7 @@ struct AccelerometerView: View {
                 print(userInfo.accelerationY)
                 print(userInfo.accelerationZ)
             } label: {
-                Text("유저 인포 가속도 보여줘!")
+                Text("유저 인포 가속도 보여줘")
             }
 
             
@@ -162,7 +178,8 @@ struct AccelerometerView: View {
 //                }
             }
             
-            self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+                self.spentTime += 1
 //                    var formatter = DateFormatter()
 //                    formatter.dateFormat = "HH:mm:ss"
 //                    var current_date_time = formatter.string(from: Date())
@@ -172,17 +189,70 @@ struct AccelerometerView: View {
 //                print(accelerationZ)
                 if audioSessionManager.isAirPodsConnected {
                     print("airPods Connected..")
-                    self.accelerationXs.append(accelerationX)
-                    self.accelerationYs.append(accelerationY)
-                    self.accelerationZs.append(accelerationZ)
+                    // 절대값으로 받기위해 abs()
+                    self.accelerationXs.append(abs(accelerationX))
+                    self.accelerationYs.append(abs(accelerationY))
+                    self.accelerationZs.append(abs(accelerationZ))
                 }
                 
-                // 가속도 절댓값의 평균 보다 낮은 값이 3분 이상 지속되면 수면 이라고 판단한다.
+                // 가속도 절댓값의 평균 보다 낮은 값이 3분 이상 지속되면 수면이라고 판단한다.
+                /// 1. 공부 시작 후 가속도 값을 1분 동안 받아온다     //    [1,1,1,1,1,1,1,1,1,1,1]
+                /// 2. 1분동안 축적된 가속도 값을 기반으로 평균 가속도 값의 범위를 구한다.  //  평균 -> 1
+                /// 3. 평균 가속도 값 보다 낮은 상태가 지속되면 수면으로 판단한다.  // 평균은 1이다. 만약 1보다 낮은 상태가 3분동안 지속되면 자는거야
+                /// (but) 뒤척임이 있을 경우가 있을 수 있다. -> 뒤척임을 감지하는 3번정도의 카운트를 둔다.   // 예외처리, 3번정도 값이 튀어도 된다
+                ///
+                /// 에어팟을 굳이 사용해야 하는 이유가 있나.
+                /// 워치의 가속도 값을 사용하면 되잖아.
+                /// 워치나 에어팟이나 값을 받아오는 방법만 다르지 알고리즘은 같다.
+                /// => 일단 에어팟으로 해보자.
+                ///
+                /// 일단 1Hz 로 해보고 성공하면 20 까지 늘려보자.
+                ///
+                /// func sleepDetectBy(accelerations: [Double]) 이 함수를 언제 써야할까
+                /// 시작하고 1분 뒤부터 1초마다 실행한다.
+                /// 1분이 지났는지 알아야한다 -> 시작 하면 타이머 on
                 
                 userInfo.accelerationX = self.accelerationXs
                 userInfo.accelerationY = self.accelerationYs
                 userInfo.accelerationZ = self.accelerationZs
+                
+                /// 1분이 지났을 경우부터 수면 감지 시작.  true or false 값 sleepDetectArray 에 축적
+                if spentTime >= 60 {
+                    sleepDetectArray.append(sleepDetectBy(accelerations: userInfo.accelerationX!))
+                }
+                if spentTime >= 121 {
+                    isFellASleep = wholeSleepDetectBy(sleepDetectArray)
+                }
             }
+        }
+    }
+    
+    func sleepDetectBy(accelerations: [Double]) -> Bool {
+        let average = Double(accelerations.reduce(0, +)) / Double(accelerations.count)
+        let upToDateAcceleration = accelerations.last ?? 0
+        
+        if upToDateAcceleration >= average {
+            // 움직임 감지
+            return false
+        } else {
+            // 움직임 미감지
+            return true
+        }
+    }
+    
+    func wholeSleepDetectBy(_ sleepDetectArray: [Bool]) -> Bool {
+        let allCount = sleepDetectArray.count
+        
+        /// 최근 60개의 움직임 데이터를 통해 수면 카운트를 잰다.
+        let 수면연속카운트 = sleepDetectArray[allCount - 60 ... allCount - 1].filter({ $0 == true }).count
+        print(sleepDetectArray)
+        print(수면연속카운트)
+        if 수면연속카운트 >= 55 {
+            print("진짜 잔다")
+            return true
+        } else {
+            print("진짜 안잔다")
+            return false
         }
     }
 }

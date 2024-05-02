@@ -22,6 +22,7 @@
 		EB6FDD232BCAC87B00015E1D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD222BCAC87B00015E1D /* ContentView.swift */; };
 		EB6FDD272BCAF92A00015E1D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD262BCAF92A00015E1D /* LoginView.swift */; };
 		EB6FDD292BCAFD7800015E1D /* DetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD282BCAFD7800015E1D /* DetectionView.swift */; };
+		EB9E352B2BE38414002016FC /* TESTSleepDetectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */; };
 		EBB6C5D72BCE5C530034737E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB6C5D62BCE5C530034737E /* UserInfo.swift */; };
 		EBCA93342BC6EC6A0021097C /* WatchConnectivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93332BC6EC6A0021097C /* WatchConnectivityProvider.swift */; };
 		EBCA93362BC6EC9D0021097C /* WatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93352BC6EC9D0021097C /* WatchTimer.swift */; };
@@ -76,6 +77,7 @@
 		EB6FDD222BCAC87B00015E1D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EB6FDD262BCAF92A00015E1D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		EB6FDD282BCAFD7800015E1D /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
+		EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTSleepDetectView.swift; sourceTree = "<group>"; };
 		EBB6C5D62BCE5C530034737E /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		EBC330012BC68DD500FB5220 /* watchConDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = watchConDemo.entitlements; sourceTree = "<group>"; };
 		EBC330022BC68DF300FB5220 /* connectDemo Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "connectDemo Watch App.entitlements"; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				EBCA933A2BC6F8D10021097C /* AccelerometerView.swift */,
+				EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */,
 				EBF7BE8D2BD7B4A70032F0CF /* CSVTESTVIEW.swift */,
 				EB6FDD262BCAF92A00015E1D /* LoginView.swift */,
 				EB6FDD282BCAFD7800015E1D /* DetectionView.swift */,
@@ -335,6 +338,7 @@
 				EB6FDD292BCAFD7800015E1D /* DetectionView.swift in Sources */,
 				EB30F0BC2BC445AF00719A30 /* ConnectivityProvider.swift in Sources */,
 				EBCA933B2BC6F8D10021097C /* AccelerometerView.swift in Sources */,
+				EB9E352B2BE38414002016FC /* TESTSleepDetectView.swift in Sources */,
 				EBCA933D2BC6F8F80021097C /* SoundManager.swift in Sources */,
 				EB685E8C2BCBD73100F0FA20 /* AudioSessionManager.swift in Sources */,
 			);
