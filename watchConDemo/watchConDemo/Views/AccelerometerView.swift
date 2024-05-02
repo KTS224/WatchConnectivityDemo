@@ -34,7 +34,9 @@ struct AccelerometerView: View {
     @State private var spentTime: Int = 0
     
     // 연속 60개중 true가 55개 이상이면 자는거다. (뒤척임 5개 제외함)
-    @State private var sleepDetectArray: [Bool] = []
+    @State private var sleepDetectArrayX: [Bool] = []
+    @State private var sleepDetectArrayY: [Bool] = []
+    @State private var sleepDetectArrayZ: [Bool] = []
     @State private var isFellASleep: Bool = false
     
     var body: some View {
@@ -211,6 +213,8 @@ struct AccelerometerView: View {
                 /// func sleepDetectBy(accelerations: [Double]) 이 함수를 언제 써야할까
                 /// 시작하고 1분 뒤부터 1초마다 실행한다.
                 /// 1분이 지났는지 알아야한다 -> 시작 하면 타이머 on
+                /// 현재는 시간 10배 빠르게 되어있음
+                // TODO: x y z 좌표 모두 사용하기.
                 
                 userInfo.accelerationX = self.accelerationXs
                 userInfo.accelerationY = self.accelerationYs
@@ -218,10 +222,13 @@ struct AccelerometerView: View {
                 
                 /// 1분이 지났을 경우부터 수면 감지 시작.  true or false 값 sleepDetectArray 에 축적
                 if spentTime >= 60 {
-                    sleepDetectArray.append(sleepDetectBy(accelerations: userInfo.accelerationX!))
+                    sleepDetectArrayX.append(sleepDetectBy(accelerations: userInfo.accelerationX!))
+                    sleepDetectArrayY.append(sleepDetectBy(accelerations: userInfo.accelerationY!))
+                    sleepDetectArrayZ.append(sleepDetectBy(accelerations: userInfo.accelerationZ!))
                 }
                 if spentTime >= 121 {
-                    isFellASleep = wholeSleepDetectBy(sleepDetectArray)
+                    /// 가속도 센서의 x, y, z 값 모두 움직임이 감지되지 않음이 지속될 경우 isFellASleep은 true 가 된다.
+                    isFellASleep = wholeSleepDetectBy(sleepDetectArrayX) && wholeSleepDetectBy(sleepDetectArrayY) && wholeSleepDetectBy(sleepDetectArrayZ)
                 }
             }
         }
