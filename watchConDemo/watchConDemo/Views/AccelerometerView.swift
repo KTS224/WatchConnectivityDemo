@@ -259,8 +259,8 @@ struct AccelerometerView: View {
         
         /// 최근 60개의 움직임 데이터를 통해 수면 카운트를 잰다.
         let 수면연속카운트 = sleepDetectArray[allCount - 60 ... allCount - 1].filter({ $0 == true }).count
-        print(sleepDetectArray)
-        print(수면연속카운트)
+//        print(sleepDetectArray)
+//        print(수면연속카운트)
         if 수면연속카운트 >= 55 {
             print("진짜 잔다")
             return true

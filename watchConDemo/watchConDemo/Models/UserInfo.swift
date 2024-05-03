@@ -18,7 +18,7 @@ class UserInfo {
     var accelerationY: [Double]?
     var accelerationZ: [Double]?
     var accelerationAvr: [Double]?
-    var heartRate: [Double]?
+    var heartRate: [Int]?
     var heartRateAvr: [Double]?
     var currentTime: [TimeInterval]?
     

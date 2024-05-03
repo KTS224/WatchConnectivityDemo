@@ -8,8 +8,20 @@
 import SwiftUI
 
 struct HeartRateView: View {
+    // TODO: 심박수를 userInfo 에 받아오기
+    ///
+    /// 1. 심박수를 userInfo 에 받아온다
+    /// 2. 받아온 심박수를 기반으로 평균 심박수를 계산한다.
+    /// 3. 평균 심박수와 현재 10개의 심박수를 비교하여 평균 심박수보다 20% 가량 낮으면 수면으로 판단한다.
+    ///
+    /// 현재는 워치로 부터 1초당 심박수를 받아올 수 있다.
+    /// -> 받아온 심박수를 userInfo에 저장한다. (완료)
+    /// 받아온 심박수는 model(ConnectivityProvider()) 의 allHeartRate 에 저장 되어있다.
+    
+    
     @ObservedObject var model = ConnectivityProvider()
     @ObservedObject var myTimer = MyTimer()
+    let userInfo = UserInfo.shared
     
     var body: some View {
         VStack {

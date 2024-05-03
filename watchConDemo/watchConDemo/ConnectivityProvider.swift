@@ -16,7 +16,7 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     @Published var heartRate = 0
     @Published var allHeartRate: [Int] = []
     
-    
+    let userInfo = UserInfo.shared
     
     @Published var buttonEnabled: Bool = false
     
@@ -73,7 +73,15 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
             self.heartRate = userInfo["heartRate"] as? Int ?? 0
         }
         
-        allHeartRate.append(heartRate)
+        /// 뷰에 보여주기위한 배열 (삭제 예정)
+        /// ERROR: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
+        /// DispatchQueue.main.async { [self] in } 사용하여 오류 해결
+        DispatchQueue.main.async { [self] in
+            self.allHeartRate.append(heartRate)
+        }
+        // didReceiveUserInfo userInfo: [String : Any]랑 다른 싱글톤패턴의 userInfo이다.
+        self.userInfo.heartRate = allHeartRate
+        print(self.userInfo.heartRate)
     }
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
