@@ -42,6 +42,11 @@ struct HeartRateView: View {
                 .onAppear {
                     self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                         self.spentTime += 1
+                        
+                        /// 30초 지날시 평균 심박수 계산 시작한다.
+                        if spentTime >= 30 {
+                            
+                        }
                     }
                 }
                 .onDisappear {
@@ -57,7 +62,7 @@ struct HeartRateView: View {
                     model.allHeartRate.removeAll()
                     
                     /// 중단시 userInfo의 heartRate 초기화.
-                    userInfo.heartRate = []
+                    userInfo.heartRates = []
                 }, label: {
                     Text("중단하기")
                         .bold()
@@ -70,7 +75,9 @@ struct HeartRateView: View {
         }
     }
     
-    
+    func calculateAverageHeartRate(_ heartRates: [Int]) {
+        
+    }
     
     func secondsToHoursMinutesSeconds(_ seconds: Int) -> (Int, Int, Int) {
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)

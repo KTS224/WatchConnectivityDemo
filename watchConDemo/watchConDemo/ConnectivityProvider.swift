@@ -80,8 +80,8 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
             self.allHeartRate.append(heartRate)
         }
         // didReceiveUserInfo userInfo: [String : Any]랑 다른 싱글톤패턴의 userInfo이다.
-        self.userInfo.heartRate = allHeartRate
-        print(self.userInfo.heartRate)
+        self.userInfo.heartRates = allHeartRate
+        print(self.userInfo.heartRates)
     }
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
