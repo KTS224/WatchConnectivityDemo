@@ -55,6 +55,9 @@ struct HeartRateView: View {
                     print("중단 버튼 누름")
                     model.sendReset()
                     model.allHeartRate.removeAll()
+                    
+                    /// 중단시 userInfo의 heartRate 초기화.
+                    userInfo.heartRate = []
                 }, label: {
                     Text("중단하기")
                         .bold()
