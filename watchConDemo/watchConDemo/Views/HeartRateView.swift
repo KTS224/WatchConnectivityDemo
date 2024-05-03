@@ -19,13 +19,21 @@ struct HeartRateView: View {
     /// 받아온 심박수는 model(ConnectivityProvider()) 의 allHeartRate 에 저장 되어있다.
     ///
     /// 받아온 심박수를 기반으로 평균 심박수를 계산한다. (완료)
+    ///
+    /// 평균 심박수와 현재 10개의 심박수를 비교하여 평균 심박수보다 20% 가량 낮으면 수면으로 판단한다.
     
+    let hapticManager = HapticManager.instance
     
     @ObservedObject var model = ConnectivityProvider()
     let userInfo = UserInfo.shared
     
     @State private var timer: Timer?
     @State private var spentTime: Int = 0
+    
+    /// 심박수를 기반한 sleepDetectArray
+    @State private var sleepDetectArray: [Bool] = []
+    @State private var isFellASleep: Bool = false
+    @State private var fellASleepCounter: Double = 0
     
     var body: some View {
         VStack {
@@ -43,15 +51,26 @@ struct HeartRateView: View {
                     Text("\(model.allHeartRate)")
                         .foregroundStyle(.gray)
                 }
+                .background(isFellASleep ? .red.opacity(fellASleepCounter) : .clear)
                 .onAppear {
                     self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                         self.spentTime += 1
                         
-                        /// 30초 지날시 평균 심박수 계산 시작한다.
+                        /// 60초 지날시 평균 심박수 계산 시작한다.
+                        /// 60초 지났을 경우부터 수면 감지 시작.  true or false 값 sleepDetectArray 에 축적
                         // TODO: 앞에 10개 정도는 뺴야함/ 왜냐하면 처음에 0으로 몇번 나올 경우가 많다.
-                        if spentTime >= 30 {
+                        if spentTime >= 60 {
                             print("평균 심박수 : \(calculateAverageHeartRateBy(userInfo.heartRates ?? [1]))")
+                            sleepDetectArray.append(sleepDetectBy(userInfo.heartRates!))
+                        }
+                        
+                        if spentTime >= 121 {
+                            /// 현재 심박수가 평균 심박수보다 20퍼센트 낮은상태가 지속될 경우 isFellASleep은 true 가 된다.
+                            isFellASleep = wholeSleepDetectBy(sleepDetectArray)
                             
+                            /// 진동줄지 얼마나 잠들었는지 판단하기 위한 메서드
+                            decideWhetherToVibrateOrNot(isFellASleep)
+                            countHowManyTimesYouFellASleep(isFellASleep)
                         }
                     }
                 }
@@ -84,6 +103,52 @@ struct HeartRateView: View {
     func calculateAverageHeartRateBy(_ heartRates: [Int]) -> Int {
         let heartRatesAverage = heartRates.reduce(0, +) / heartRates.count
         return heartRatesAverage
+    }
+    
+    func sleepDetectBy(_ heartRates: [Int]) -> Bool {
+        let average = Double(calculateAverageHeartRateBy(heartRates))
+        let upToDateHeartRate = Double(heartRates.last ?? 0)
+        /// 평균 심박수보다 20퍼센트 낮은 경우
+        if upToDateHeartRate < average * 0.8 {
+        
+            // 평균의 20퍼 낮은거 보다 낮다 -> 자는거 같음
+            return true
+        } else {
+            // 안자는거 같음
+            return false
+        }
+    }
+    
+    func wholeSleepDetectBy(_ sleepDetectArray: [Bool]) -> Bool {
+        let allCount = sleepDetectArray.count
+        
+        /// 최근 60개의 심박수 데이터를 통해 수면 카운트를 계산한다.
+        let 수면연속카운트 = sleepDetectArray[allCount - 60 ... allCount - 1].filter({ $0 == true }).count
+        
+        if 수면연속카운트 >= 55 {
+            print("수면 연속 카운트 : \(수면연속카운트)")
+            print("진짜 잔다")
+            return true
+        } else {
+            fellASleepCounter = 0
+            print("진짜 안잔다")
+            return false
+        }
+    }
+    
+    // TODO: 지속시간에 따라 진동 세기 변경하기
+    func decideWhetherToVibrateOrNot(_ isFellASleep: Bool) {
+        if isFellASleep {
+            hapticManager.notification(type: .error)
+        }
+    }
+    
+    func countHowManyTimesYouFellASleep(_ isFellASleep: Bool) {
+        if isFellASleep {
+            self.fellASleepCounter += 0.01
+        } else {
+            self.fellASleepCounter = 0
+        }
     }
     
     func secondsToHoursMinutesSeconds(_ seconds: Int) -> (Int, Int, Int) {
