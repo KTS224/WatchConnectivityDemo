@@ -156,6 +156,8 @@ struct ContentView: View {
                     // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
                     self.model.session.transferUserInfo(["heartRate" : Int(healthKitManager.heartRate)])
                     print(Int(healthKitManager.heartRate))
+                    //MARK: 진동 메서드 rawValue:로 진동 어디까지 세지는지 아직 모름.
+//                    WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
                 }
             }
             .onDisappear {
