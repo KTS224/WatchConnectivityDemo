@@ -15,6 +15,8 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     @Published var buttonText = "측정하기"
     @Published var buttonDisabled = false
     
+    @Published var isHapticOn = false
+    
     init(session: WCSession = .default) {
         self.session = session
         super.init()
@@ -35,6 +37,16 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
             DispatchQueue.main.async {
                 self.buttonText = "측정하기"
                 self.buttonDisabled = false
+            }
+        }
+        
+        if let hapticPermisson = message["hapticPermisson"] as? Bool, hapticPermisson {
+            DispatchQueue.main.async {
+                self.isHapticOn = true
+            }
+        } else if let hapticPermisson = message["hapticPermisson"] as? Bool, !hapticPermisson {
+            DispatchQueue.main.async {
+                self.isHapticOn = false
             }
         }
     }

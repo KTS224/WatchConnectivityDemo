@@ -11,6 +11,7 @@ import Combine
 import UniformTypeIdentifiers
 
 struct AccelerometerView: View {
+    @ObservedObject var model = ConnectivityProvider()
     @ObservedObject var audioSessionManager = AudioSessionManager()
     private let soundManager = SoundSetting.instance
     let hapticManager = HapticManager.instance
@@ -266,10 +267,12 @@ struct AccelerometerView: View {
         print(수면연속카운트)
         if 수면연속카운트 >= 55 {
             print("진짜 잔다")
+            model.sendHapticToWatch()
             return true
         } else {
             fellASleepCounter = 0
             print("진짜 안잔다")
+            model.stopHapticToWatch()
             return false
         }
     }

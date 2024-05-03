@@ -35,6 +35,7 @@ struct ContentView: View {
     var model = WatchConnectivityProvider()
     @ObservedObject var myTimer = MyTimer()
     @State private var timer: Timer?
+    @State private var timerForHaptic: Timer?
 
     // 애니메이션용 변수
     @State private var beatAnimation: Bool = false
@@ -122,6 +123,18 @@ struct ContentView: View {
                 })
             }
         }
+        .onAppear {
+            self.timerForHaptic = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                //MARK: 진동 메서드 rawValue:로 진동 어디까지 세지는지 아직 모름.
+//                    WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
+                if model.isHapticOn {
+                    WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
+                }
+            }
+        }
+        .onDisappear {
+            timerForHaptic?.invalidate()
+        }
         
         // MARK: - 측정하기 / 측정중 버튼
         Button(action: {
@@ -144,7 +157,7 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                print("ONAPPEAR")
+                print("ONAPPEAR1")
     //            healthKitManager.startWorkout()
                 
                 // MARK: self.model.session.sendMessage 한번에 2개 이상 하면 업데이트가 0-value 로 시간차가 이상하게 되는 오류가 있음.
@@ -156,12 +169,11 @@ struct ContentView: View {
                     // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
                     self.model.session.transferUserInfo(["heartRate" : Int(healthKitManager.heartRate)])
                     print(Int(healthKitManager.heartRate))
-                    //MARK: 진동 메서드 rawValue:로 진동 어디까지 세지는지 아직 모름.
-//                    WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
                 }
             }
             .onDisappear {
                 showPulses.toggle()
+                timer?.invalidate()
             }
         } else {
             HStack {

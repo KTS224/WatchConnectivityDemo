@@ -112,9 +112,12 @@ struct HeartRateView: View {
         if upToDateHeartRate < average * 0.8 {
         
             // 평균의 20퍼 낮은거 보다 낮다 -> 자는거 같음
+            // TODO: 워치에 진동 을 허락하는 메서드 추가하기
+            model.sendHapticToWatch()
             return true
         } else {
             // 안자는거 같음
+            model.stopHapticToWatch()
             return false
         }
     }

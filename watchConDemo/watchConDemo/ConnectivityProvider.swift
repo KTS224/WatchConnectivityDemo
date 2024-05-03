@@ -46,6 +46,25 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
         self.buttonEnabled = false
     }
     
+    /// 워치에 진동 신호를 주는 메서드
+    func sendHapticToWatch() {
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(["hapticPermisson": true], replyHandler: nil, errorHandler: { error in
+                print("Error sending reset: \(error)")
+            })
+        }
+//        self.buttonEnabled = false
+    }
+    
+    /// 워치에 진동 멈추게 하는 메서드
+    func stopHapticToWatch() {
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(["hapticPermisson": false], replyHandler: nil, errorHandler: { error in
+                print("Error sending reset: \(error)")
+            })
+        }
+//        self.buttonEnabled = false
+    }
     
     /**
      델리게이트 메서드
