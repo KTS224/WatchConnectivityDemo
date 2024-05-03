@@ -11,14 +11,14 @@ struct HeartRateView: View {
     // TODO: 심박수를 userInfo 에 받아오기
     ///
     /// 1. 심박수를 userInfo 에 받아온다 (완료)
-    /// 2. 받아온 심박수를 기반으로 평균 심박수를 계산한다.
+    /// 2. 받아온 심박수를 기반으로 평균 심박수를 계산한다. (완료)
     /// 3. 평균 심박수와 현재 10개의 심박수를 비교하여 평균 심박수보다 20% 가량 낮으면 수면으로 판단한다.
     ///
     /// 현재는 워치로 부터 1초당 심박수를 받아올 수 있다.
     /// -> 받아온 심박수를 userInfo에 저장한다. (완료)
     /// 받아온 심박수는 model(ConnectivityProvider()) 의 allHeartRate 에 저장 되어있다.
     ///
-    ///
+    /// 받아온 심박수를 기반으로 평균 심박수를 계산한다. (완료)
     
     
     @ObservedObject var model = ConnectivityProvider()
@@ -33,6 +33,10 @@ struct HeartRateView: View {
                 VStack {
                     Text("경과 시간 : \(printSecondsToHoursMinutesSeconds(spentTime))")
                     Text(model.heartRate == 0 ? "심박수 측정중 입니다." : "현재 심박수는 \(model.heartRate)bpm 입니다.")
+                    if spentTime >= 30 {
+                        Text("평균 심박수 : \(calculateAverageHeartRateBy(userInfo.heartRates ?? [1]))")
+                        
+                    }
                     // TODO: 평균 심박수 메서드 쓸지 계산할지 확인하기
         //            Text(myTimer.value <= 30 ? "평균 심박수 측정중 입니다.\n남은시간 \(30-myTimer.value)초" : "평균 심박수는 \(model.allHeartRate.reduce(0, +) / model.allHeartRate.count)bpm 입니다.")
                     Spacer()
@@ -44,7 +48,9 @@ struct HeartRateView: View {
                         self.spentTime += 1
                         
                         /// 30초 지날시 평균 심박수 계산 시작한다.
+                        // TODO: 앞에 10개 정도는 뺴야함/ 왜냐하면 처음에 0으로 몇번 나올 경우가 많다.
                         if spentTime >= 30 {
+                            print("평균 심박수 : \(calculateAverageHeartRateBy(userInfo.heartRates ?? [1]))")
                             
                         }
                     }
@@ -75,8 +81,9 @@ struct HeartRateView: View {
         }
     }
     
-    func calculateAverageHeartRate(_ heartRates: [Int]) {
-        
+    func calculateAverageHeartRateBy(_ heartRates: [Int]) -> Int {
+        let heartRatesAverage = heartRates.reduce(0, +) / heartRates.count
+        return heartRatesAverage
     }
     
     func secondsToHoursMinutesSeconds(_ seconds: Int) -> (Int, Int, Int) {
