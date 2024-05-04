@@ -23,7 +23,6 @@ struct AccelerometerView: View {
     @State private var roll = 0
     
     @State private var sleepCount = 0
-//    @State private var isDetected = false
     @State private var timer: Timer?
     
     let userInfo = UserInfo.shared
@@ -34,18 +33,37 @@ struct AccelerometerView: View {
     
     @State private var spentTime: Int = 0
     
-    // 연속 60개중 true가 55개 이상이면 자는거다. (뒤척임 5개 제외함)
-    @State private var sleepDetectArrayX: [Bool] = []
-    @State private var sleepDetectArrayY: [Bool] = []
-    @State private var sleepDetectArrayZ: [Bool] = []
-    @State private var isFellASleep: Bool = false
+//    // 연속 60개중 true가 55개 이상이면 자는거다. (뒤척임 5개 제외함)
+//    @State private var sleepDetectArrayX: [Bool] = []
+//    @State private var sleepDetectArrayY: [Bool] = []
+//    @State private var sleepDetectArrayZ: [Bool] = []
+//    @State private var isFellASleep: Bool = false
     @State private var fellASleepCounter: Double = 0
     
+    
+    /*
+     MARK: - 가속도 데이터의 차원 축소
+     
+     수면 및 비수면 상태 구분에는 사용자의 운동 세기와 운동 빈도를 고려할 뿐 방향성은 필요하지 않다.
+     따라서 3축의 가속도 신호를 종합하여 1차원의 Intensity 값으로
+     변환하면 분류에 필요한 정보를 보존하면서 연산 량을 줄일 수 있다.
+     
+     Intensity = sqrt(x^2 + y^2 + z^2)
+    */
+    
+    /// Intensity = sqrt(x^2 + y^2 + z^2)
+    @State private var intensityArray: [Double] = []
+    @State private var sleepDetectArrayIntensity: [Bool] = []
+    @State private var isFellASleepIntensity: Bool = false
+    
+    @State private var x: Double = 0
+    @State private var y: Double = 0
+    @State private var z: Double = 0
+    
     var body: some View {
-        
         VStack{
             if audioSessionManager.isAirPodsConnected {
-                Text(isFellASleep ? "자고있다." : "안자는것같다..")
+                Text(isFellASleepIntensity ? "자고있다." : "안자는것같다..")
                 Text("경과 시간 : \(spentTime)초")
 //                Text("Pitch: \(pitch)")
 //                Text("Yaw: \(yaw)")
@@ -118,20 +136,6 @@ struct AccelerometerView: View {
         //                    self.pitch = Int(attitude.pitch * 10)
         //                    self.yaw = Int(attitude.yaw * 10)
         //                    self.roll = Int(attitude.roll * 10)
-        //
-        //                    if self.pitch <= -10 {
-        //                        if !isDetected {
-        //                            soundManager.playSound(sound: .Knock)
-        //                        }
-        //
-        //                        sleepCount += 1
-        //                        hapticManager.notification(type: .error)
-        ////                        hapticManager.impact(style: .heavy)
-        //                        isDetected = true
-        //                    } else {
-        //                        isDetected = false
-        //                        sleepCount = 0
-        //                    }
         //                }
                     }
                     
@@ -142,16 +146,20 @@ struct AccelerometerView: View {
         //                    var formatter = DateFormatter()
         //                    formatter.dateFormat = "HH:mm:ss"
         //                    var current_date_time = formatter.string(from: Date())
-                        
-        //                print(accelerationX)
-        //                print(accelerationY)
-        //                print(accelerationZ)
                         if audioSessionManager.isAirPodsConnected {
                             print("airPods Connected..")
                             // 절대값으로 받기위해 abs()
-                            self.accelerationXs.append(abs(accelerationX))
-                            self.accelerationYs.append(abs(accelerationY))
-                            self.accelerationZs.append(abs(accelerationZ))
+//                            self.accelerationXs.append(abs(accelerationX))
+//                            self.accelerationYs.append(abs(accelerationY))
+//                            self.accelerationZs.append(abs(accelerationZ))
+//
+                            self.x = pow(accelerationX, 2)
+                            self.y = pow(accelerationY, 2)
+                            self.z = pow(accelerationZ, 2)
+                            
+                            self.accelerationXs.append(self.x)
+                            self.accelerationYs.append(self.y)
+                            self.accelerationZs.append(self.z)
                         }
                         
                         // 가속도 절댓값의 평균 보다 낮은 값이 3분 이상 지속되면 수면이라고 판단한다.
@@ -179,20 +187,29 @@ struct AccelerometerView: View {
                         userInfo.accelerationY = self.accelerationYs
                         userInfo.accelerationZ = self.accelerationZs
                         
+                        intensityArray.append(sqrt(x + y + z))
+                        
                         /// 1분이 지났을 경우부터 수면 감지 시작.  true or false 값 sleepDetectArray 에 축적
                         if spentTime >= 60 {
-                            sleepDetectArrayX.append(sleepDetectBy(accelerations: userInfo.accelerationX!))
-                            sleepDetectArrayY.append(sleepDetectBy(accelerations: userInfo.accelerationY!))
-                            sleepDetectArrayZ.append(sleepDetectBy(accelerations: userInfo.accelerationZ!))
+//                            sleepDetectArrayX.append(sleepDetectBy(accelerations: userInfo.accelerationX!))
+//                            sleepDetectArrayY.append(sleepDetectBy(accelerations: userInfo.accelerationY!))
+//                            sleepDetectArrayZ.append(sleepDetectBy(accelerations: userInfo.accelerationZ!))
+                            
+                            sleepDetectArrayIntensity.append(TESTsleepDetectBy(intensityArray))
                         }
                         
                         if spentTime >= 121 {
                             /// 가속도 센서의 x, y, z 값 모두 움직임이 감지되지 않음이 지속될 경우 isFellASleep은 true 가 된다.
-                            isFellASleep = wholeSleepDetectBy(sleepDetectArrayX) && wholeSleepDetectBy(sleepDetectArrayY) && wholeSleepDetectBy(sleepDetectArrayZ)
+//                            isFellASleep = wholeSleepDetectBy(sleepDetectArrayX) && wholeSleepDetectBy(sleepDetectArrayY) && wholeSleepDetectBy(sleepDetectArrayZ)
                             
+                            isFellASleepIntensity = TESTwholeSleepDetectBy(sleepDetectArrayIntensity)
                             /// 진동줄지 얼마나 잠들었는지 판단하기 위한 메서드
-                            decideWhetherToVibrateOrNot(isFellASleep)
-                            countHowManyTimesYouFellASleep(isFellASleep)
+//                            decideWhetherToVibrateOrNot(isFellASleep)
+//                            countHowManyTimesYouFellASleep(isFellASleep)
+                            
+                            decideWhetherToVibrateOrNot(isFellASleepIntensity)
+                            countHowManyTimesYouFellASleep(isFellASleepIntensity)
+
                         }
                     }
                 }
@@ -235,19 +252,51 @@ struct AccelerometerView: View {
                 print(userInfo.accelerationY)
                 print(userInfo.accelerationZ)
             } label: {
-                Text("유저 인포 가속도 보여줘")
+                Text("DEBUG: 유저 인포 가속도 보기")
             }
 
 
             Spacer()
         }
-        .background(isFellASleep ? .red.opacity(fellASleepCounter) : .clear)
+        .background(isFellASleepIntensity ? .red.opacity(fellASleepCounter) : .clear)
         //Vstack
     }
     
-    func sleepDetectBy(accelerations: [Double]) -> Bool {
-        let average = Double(accelerations.reduce(0, +)) / Double(accelerations.count)
-        let upToDateAcceleration = accelerations.last ?? 0
+//    func sleepDetectBy(accelerations: [Double]) -> Bool {
+//        let average = Double(accelerations.reduce(0, +)) / Double(accelerations.count)
+//        let upToDateAcceleration = accelerations.last ?? 0
+//        
+//        if upToDateAcceleration >= average {
+//            // 움직임 감지
+//            return false
+//        } else {
+//            // 움직임 미감지
+//            return true
+//        }
+//    }
+    
+//    func wholeSleepDetectBy(_ sleepDetectArray: [Bool]) -> Bool {
+//        let allCount = sleepDetectArray.count
+//        
+//        /// 최근 60개의 움직임 데이터를 통해 수면 카운트를 잰다.
+//        let 수면연속카운트 = sleepDetectArray[allCount - 60 ... allCount - 1].filter({ $0 == true }).count
+//        print(sleepDetectArray)
+//        print(수면연속카운트)
+//        if 수면연속카운트 >= 55 {
+//            print("진짜 잔다")
+//            model.sendHapticToWatch()
+//            return true
+//        } else {
+//            fellASleepCounter = 0
+//            print("진짜 안잔다")
+//            model.stopHapticToWatch()
+//            return false
+//        }
+//    }
+    
+    func TESTsleepDetectBy(_ intensityArray: [Double]) -> Bool {
+        let average = Double(intensityArray.reduce(0, +)) / Double(intensityArray.count)
+        let upToDateAcceleration = intensityArray.last ?? 0
         
         if upToDateAcceleration >= average {
             // 움직임 감지
@@ -258,12 +307,12 @@ struct AccelerometerView: View {
         }
     }
     
-    func wholeSleepDetectBy(_ sleepDetectArray: [Bool]) -> Bool {
-        let allCount = sleepDetectArray.count
+    func TESTwholeSleepDetectBy(_ sleepDetectArrayIntensity: [Bool]) -> Bool {
+        let allCount = sleepDetectArrayIntensity.count
         
         /// 최근 60개의 움직임 데이터를 통해 수면 카운트를 잰다.
-        let 수면연속카운트 = sleepDetectArray[allCount - 60 ... allCount - 1].filter({ $0 == true }).count
-        print(sleepDetectArray)
+        let 수면연속카운트 = sleepDetectArrayIntensity[allCount - 60 ... allCount - 1].filter({ $0 == true }).count
+        print(sleepDetectArrayIntensity)
         print(수면연속카운트)
         if 수면연속카운트 >= 55 {
             print("진짜 잔다")
