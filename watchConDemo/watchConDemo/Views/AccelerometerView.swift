@@ -10,6 +10,14 @@ import CoreMotion
 import Combine
 import UniformTypeIdentifiers
 
+// TODO: 1. 워치의 가속도값이 측정 가능하게 구현한다.
+///
+///
+// TODO: 2. 임계값 조정을 위한 실험
+/// 진짜 잔다.?
+/// 가속도데이터 측정될거야.
+///
+
 struct AccelerometerView: View {
     @ObservedObject var model = ConnectivityProvider()
     @ObservedObject var audioSessionManager = AudioSessionManager()

@@ -13,7 +13,6 @@
 		EB30F09A2BC4424600719A30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB30F0992BC4424600719A30 /* Assets.xcassets */; };
 		EB30F09D2BC4424600719A30 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB30F09C2BC4424600719A30 /* Preview Assets.xcassets */; };
 		EB30F0AC2BC442B200719A30 /* connectDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0AB2BC442B200719A30 /* connectDemoApp.swift */; };
-		EB30F0AE2BC442B200719A30 /* ContentView[Deprecated].swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0AD2BC442B200719A30 /* ContentView[Deprecated].swift */; };
 		EB30F0B02BC442B400719A30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB30F0AF2BC442B400719A30 /* Assets.xcassets */; };
 		EB30F0B32BC442B400719A30 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB30F0B22BC442B400719A30 /* Preview Assets.xcassets */; };
 		EB30F0B62BC442B400719A30 /* connectDemo Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = EB30F0A92BC442B200719A30 /* connectDemo Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -69,7 +68,6 @@
 		EB30F09C2BC4424600719A30 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EB30F0A92BC442B200719A30 /* connectDemo Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "connectDemo Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB30F0AB2BC442B200719A30 /* connectDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = connectDemoApp.swift; sourceTree = "<group>"; };
-		EB30F0AD2BC442B200719A30 /* ContentView[Deprecated].swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView[Deprecated].swift"; sourceTree = "<group>"; };
 		EB30F0AF2BC442B400719A30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB30F0B22BC442B400719A30 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityProvider.swift; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 		EB6FDD252BCAF90F00015E1D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EB30F0AD2BC442B200719A30 /* ContentView[Deprecated].swift */,
 				EB6FDD222BCAC87B00015E1D /* ContentView.swift */,
 			);
 			path = Views;
@@ -348,7 +345,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB30F0AE2BC442B200719A30 /* ContentView[Deprecated].swift in Sources */,
 				EB30F0AC2BC442B200719A30 /* connectDemoApp.swift in Sources */,
 				EB292D4A2BCD6EA700E7E319 /* HealthKitManager.swift in Sources */,
 				EB6FDD232BCAC87B00015E1D /* ContentView.swift in Sources */,
