@@ -16,6 +16,14 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     @Published var heartRate = 0
     @Published var allHeartRate: [Int] = []
     
+    @Published var deviceMotionX: Double = 0
+    @Published var deviceMotionY: Double = 0
+    @Published var deviceMotionZ: Double = 0
+    
+    @Published var allDeviceMotionX: [Double] = []
+    @Published var allDeviceMotionY: [Double] = []
+    @Published var allDeviceMotionZ: [Double] = []
+    
     let userInfo = UserInfo.shared
     
     @Published var buttonEnabled: Bool = false
@@ -90,6 +98,9 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
         DispatchQueue.main.async {
             self.heartRate = userInfo["heartRate"] as? Int ?? 0
+            self.deviceMotionX = userInfo["deviceMotionX"] as? Double ?? 0
+            self.deviceMotionY = userInfo["deviceMotionY"] as? Double ?? 0
+            self.deviceMotionZ = userInfo["deviceMotionZ"] as? Double ?? 0
         }
         
         /// 뷰에 보여주기위한 배열 (삭제 예정)
@@ -97,10 +108,15 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
         /// DispatchQueue.main.async { [self] in } 사용하여 오류 해결
         DispatchQueue.main.async { [self] in
             self.allHeartRate.append(heartRate)
+            self.allDeviceMotionX.append(deviceMotionX)
+            self.allDeviceMotionY.append(deviceMotionY)
+            self.allDeviceMotionZ.append(deviceMotionZ)
         }
         // didReceiveUserInfo userInfo: [String : Any]랑 다른 싱글톤패턴의 userInfo이다.
         self.userInfo.heartRates = allHeartRate
-        print(self.userInfo.heartRates)
+//        print(self.userInfo.heartRates)
+        // TODO: print 안찍힘. -> self.userInfo.heartRates = allHeartRate  작동하는지 알아볼 필요 있음.
+        print("받았다 x: \(self.deviceMotionX)")
     }
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {

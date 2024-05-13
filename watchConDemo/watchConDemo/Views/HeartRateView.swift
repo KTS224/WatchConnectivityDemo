@@ -50,6 +50,9 @@ struct HeartRateView: View {
                     Spacer()
                     Text("\(model.allHeartRate)")
                         .foregroundStyle(.gray)
+                    
+                    Text("\(model.allDeviceMotionX)")
+                        .foregroundStyle(.gray)
                 }
                 .background(isFellASleep ? .red.opacity(fellASleepCounter) : .clear)
                 .onAppear {
@@ -85,6 +88,10 @@ struct HeartRateView: View {
                     print("중단 버튼 누름")
                     model.sendReset()
                     model.allHeartRate.removeAll()
+                    
+                    model.allDeviceMotionX.removeAll()
+                    model.allDeviceMotionY.removeAll()
+                    model.allDeviceMotionZ.removeAll()
                     
                     /// 중단시 userInfo의 heartRate 초기화.
                     userInfo.heartRates = []

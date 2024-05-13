@@ -12,6 +12,10 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     var session: WCSession
     @Published var heartRate = 0
     
+    @Published var deviceMotionX: Double = 0
+    @Published var deviceMotionY: Double = 0
+    @Published var deviceMotionZ: Double = 0
+    
     @Published var buttonText = "측정하기"
     @Published var buttonDisabled = false
     
@@ -73,6 +77,10 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
         DispatchQueue.main.async {
             self.heartRate = userInfo["heartRate"] as? Int ?? 0
+            self.deviceMotionX = userInfo["deviceMotionX"] as? Double ?? 0
+            self.deviceMotionY = userInfo["deviceMotionY"] as? Double ?? 0
+            self.deviceMotionZ = userInfo["deviceMotionZ"] as? Double ?? 0
+            
         }
     }
 }
