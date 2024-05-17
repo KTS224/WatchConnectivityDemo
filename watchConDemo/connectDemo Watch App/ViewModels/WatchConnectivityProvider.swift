@@ -7,18 +7,14 @@
 
 import Foundation
 import WatchConnectivity
+import CoreMotion
 
 class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     var session: WCSession
-    @Published var heartRate = 0
-    
-    @Published var deviceMotionX: Double = 0
-    @Published var deviceMotionY: Double = 0
-    @Published var deviceMotionZ: Double = 0
+    private let motionManager = CMMotionManager()
     
     @Published var buttonText = "측정하기"
     @Published var buttonDisabled = false
-    
     @Published var isHapticOn = false
     
     init(session: WCSession = .default) {
@@ -26,6 +22,50 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
         super.init()
         session.delegate = self
         session.activate()
+    }
+    
+    @Published var heartRate = 0
+    @Published var heartRates: [Int] = []
+    @Published var accX: Double = 0
+    @Published var accY: Double = 0
+    @Published var accZ: Double = 0
+    @Published var accXs: [Double] = []
+    @Published var accYs: [Double] = []
+    @Published var accZs: [Double] = []
+    
+    func startRecordingDeviceMotion() {
+        // MARK: Device motion 측정
+        // Device motion을 수집 가능한지 확인
+        guard motionManager.isDeviceMotionAvailable else {
+            print("Device motion data is not available")
+            return
+        }
+        
+        // 모션 갱신 주기 설정 (10Hz)
+        motionManager.deviceMotionUpdateInterval = 0.1
+        // Device motion 업데이트 받기 시작
+        motionManager.startDeviceMotionUpdates(to: .main) { [self] (deviceMotion: CMDeviceMotion?, error: Error?) in
+            guard let data = deviceMotion, error == nil else {
+                print("Failed to get device motion data: \(error?.localizedDescription ?? "Unknown error")")
+                return
+            }
+            // 필요한 센서값 불러오기
+            let acceleration = data.userAcceleration
+            
+            accX = acceleration.x
+            accY = acceleration.y
+            accZ = acceleration.z
+            
+            accXs.append(accX)
+            accYs.append(accY)
+            accZs.append(accZ)
+            
+            print("가속도 x 개수: \(accXs.count)")
+        }
+    }
+    
+    func stopRecordingDeviceMotion() {
+        motionManager.stopDeviceMotionUpdates()
     }
     
     func sendButtonPressed() {
@@ -77,9 +117,11 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
         DispatchQueue.main.async {
             self.heartRate = userInfo["heartRate"] as? Int ?? 0
-            self.deviceMotionX = userInfo["deviceMotionX"] as? Double ?? 0
-            self.deviceMotionY = userInfo["deviceMotionY"] as? Double ?? 0
-            self.deviceMotionZ = userInfo["deviceMotionZ"] as? Double ?? 0
+            
+            // MARK: 디바이스 모션을 계속 넘겨줄 필요가 없어서 주석처리함
+//            self.deviceMotionX = userInfo["deviceMotionX"] as? Double ?? 0
+//            self.deviceMotionY = userInfo["deviceMotionY"] as? Double ?? 0
+//            self.deviceMotionZ = userInfo["deviceMotionZ"] as? Double ?? 0
             
         }
     }

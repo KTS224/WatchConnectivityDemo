@@ -10,46 +10,26 @@ import HealthKit
 import SwiftUI
 import CoreMotion
 
+///
+/// 1. 워치 가속도 배열로 받기 // 10Hz
+/// 2. 워치 심박수 배열로 받기 // 1Hz
+///
+
 struct ContentView: View {
-    @State private var accDatas: [AccData] = [
-//        AccData(date: "2024-04-23", time: "time", accel_x: "x", accel_y: "y", accel_z: "z"),
-//        AccData(date: "2024-04-23", time: "time", accel_x: "x", accel_y: "y", accel_z: "z"),
-//        AccData(date: "2024-04-23", time: "time", accel_x: "x", accel_y: "y", accel_z: "z"),
-//        AccData(date: "2024-04-23", time: "time", accel_x: "x", accel_y: "y", accel_z: "z"),
-//        AccData(date: "2024-04-23", time: "time", accel_x: "x", accel_y: "y", accel_z: "z"),
-//        AccData(date: "2024-04-23", time: "time", accel_x: "x", accel_y: "y", accel_z: "z"),
-    ]
-    
-    
     @StateObject private var healthKitManager = HealthKitManager()
     var model = WatchConnectivityProvider()
     @ObservedObject var myTimer = MyTimer()
     @State private var timer: Timer?
     @State private var timerForHaptic: Timer?
-    
-    @State private var accXs: [Double] = []
-    @State private var accYs: [Double] = []
-    @State private var accZs: [Double] = []
 
     // 애니메이션용 변수
     @State private var beatAnimation: Bool = false
     @State private var showPulses: Bool = false
     @State private var pulsedHearts: [HeartParticle] = []
     
-    
-    
-    /// motion
-    @State var accX = 0.0
-    @State var accY = 0.0
-    @State var accZ = 0.0
-    
-    private let motionManager = CMMotionManager()
-    
     var body: some View {
-        
         VStack {
             ZStack {
-                
                 if showPulses {
                     TimelineView(.animation(minimumInterval: 1.5, paused: false)) { timeline in
                         Canvas { context, size in
@@ -145,25 +125,17 @@ struct ContentView: View {
             healthKitManager.startWorkout()
             showPulses.toggle()
             
-            startRecordingDeviceMotion()
+            model.startRecordingDeviceMotion()
             print("Device motion 업데이트 시작!!!")
         }) {
             Text(model.buttonText)
         }
         .disabled(model.buttonDisabled)
         
-        Button {
-            generateTXT()
-        } label: {
-            Text("TXT 저장하기")
-        }
-
-        
         // MARK: -
         
         if model.buttonDisabled {
             VStack {
-//                Text("Heart Rate: \(healthKitManager.heartRate) bpm")
                 HStack {
                     Rectangle()
                         .frame(width: 0, height: 0)
@@ -171,28 +143,19 @@ struct ContentView: View {
             }
             .onAppear {
                 print("워치 측정중 버튼 누름.")
-    //            healthKitManager.startWorkout()
                 
                 // MARK: self.model.session.sendMessage 한번에 2개 이상 하면 업데이트가 0-value 로 시간차가 이상하게 되는 오류가 있음.
-                self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-//                    print(motionManager.xAcceleration)
-//                    print(motionManager.yAcceleration)
-//                    print(motionManager.zAcceleration)
+                self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     // MARK: 앱 실행중에 전송 매서드
                     //                self.model.session.sendMessage(["heartRate" : Int(self.heartRate ?? 100)], replyHandler: nil) { error in
                     //                    print(error.localizedDescription)
                     //                }
                     // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
                     
-                    // TODO: 주석풀기
-//                    self.model.session.transferUserInfo(["heartRate" : Int(healthKitManager.heartRate), "deviceMotionX": accX, "deviceMotionY": accY, "deviceMotionZ": accZ])
+//                    self.model.session.transferUserInfo(["heartRate" : Int(healthKitManager.heartRate), "deviceMotionX": model.accX, "deviceMotionY": model.accY, "deviceMotionZ": model.accZ])
 //                    print(Int(healthKitManager.heartRate))
-                    
-                    print(accXs.count)
-                    
-                    self.accDatas.append(AccData(accel_x: String(accX), accel_y: String(accY), accel_z: String(accZ)))
-                    
-                    
+                    model.heartRates.append(healthKitManager.heartRate)
+                    print("HR 의 개수: \(model.heartRates.count)")
                 }
             }
             .onDisappear {
@@ -208,7 +171,7 @@ struct ContentView: View {
                 print("onappear healthKitManager.stopWorkout()")
                 healthKitManager.stopWorkout()
 
-                stopRecordingDeviceMotion()
+                model.stopRecordingDeviceMotion()
                 print("Device motion 업데이트 종료!!!")
 
                 timer?.invalidate()
@@ -216,65 +179,6 @@ struct ContentView: View {
             }
         }
     }
-    
-    
-    
-    
-  /*
-    
-    def net_accel(x, y, z):
-        return (x**2 + y**2 + z**2)**0.50
-
-    acc_net = [net_accel(acc_x[i], acc_y[i], acc_z[i]) for i in range(len(acc_x))]
-
-    이게 수식1이고
-   
-   */
-   
-//    func netAccel(x: Double, y: Double, z: Double) -> Double {
-//        return sqrt(x * x + y * y + z * z)
-//    }
-//    
-//    let window_size = 100
-//    let c1 = 0.04
-//    
-//    let acc_x: [Double] = [] // Fill with your data
-//    let acc_y: [Double] = [] // Fill with your data
-//    let acc_z: [Double] = [] // Fill with your data
-    
-
-   /*
-   window_size = 100
-
-    c1 = 0.04
-
-   # window 영역내 intensity값들의 표준편차 계산
-   std_dev_list = []
-   for i in range(0, len(acc_net), window_size):
-       window = acc_net[i:i + window_size]
-       omega = np.std(window)
-       std_dev_list.append(omega)
-
-       # 표준편차가 임계치보다 작은 경우 값을 0으로 보정
-       if omega < c1:
-           acc_net[i:i + window_size] = [0] * len(window)
-   
-   
-   
-   window_size_large = 400
-
-   c2 = 0.8
-
-   # window 영역내 0의 비율 계산
-   for i in range(0, len(acc_net), window_size_large):
-       window_large = acc_net[i:i + window_size_large]
-       zero_ratio = window_large.count(0) / len(window_large)
-
-       # 0의 비율이 임계치보다 큰 경우 값을 0으로 보정
-       if zero_ratio > c2:
-           acc_net[i:i + window_size_large] = [0] * len(window_large)
-   
-   */
     
     func sleepDetectByAcceleration(x: [Double], y: [Double], z: [Double]) {
         // Function to calculate net acceleration
@@ -314,9 +218,6 @@ struct ContentView: View {
         }
 
 //        //acc_net 으로 그리기
-//        for i in
-//
-//
         
         // Constants for large window
         let window_size_large = 400
@@ -351,148 +252,4 @@ extension Array where Element == Double {
 
 #Preview {
     ContentView()
-}
-
-
-//import SwiftUI
-//import CoreMotion
-//
-//struct ContentViewTEST: View {
-//    @State var accX = 0.0
-//    @State var accY = 0.0
-//    @State var accZ = 0.0
-//    
-//    private let motionManager = CMMotionManager()
-//    
-//    var body: some View {
-//        VStack {
-//            Text("Acceleration")
-//            Text("X: \(accX)")
-//            Text("Y: \(accY)")
-//            Text("Z: \(accZ)")
-//
-//            HStack {
-//                Button {
-//                    startRecordingDeviceMotion()
-//                    print("Device motion 업데이트 시작!!!")
-//                } label: {
-//                    Text("Start")
-//                        .font(.body)
-//                        .foregroundColor(.green)
-//                }
-//                Button {
-//                    stopRecordingDeviceMotion()
-//                    print("Device motion 업데이트 종료!!!")
-//                } label: {
-//                    Text("Stop")
-//                        .font(.body)
-//                        .foregroundColor(.red)
-//                }
-//            }
-//        }
-//    }
-//}
-
-extension ContentView {
-    func startRecordingDeviceMotion() {
-        // MARK: 중력 가속도 측정
-//        if motionManager.isAccelerometerAvailable {
-//            motionManager.accelerometerUpdateInterval = 0.1  // Update interval in seconds
-//            
-//            motionManager.startAccelerometerUpdates(to: .main) { (data, error) in
-//                guard let data = data else { return }
-//                
-//                
-//                let acceleration = data.acceleration
-//                
-//                
-//                accX = acceleration.x
-//                accY = acceleration.y
-//                accZ = acceleration.z
-//                
-//                accXs.append(accX)
-//                accYs.append(accY)
-//                accZs.append(accZ)
-//            }
-//        } else {
-//            print("Accelerometer is not available")
-//        }
-        
-        
-        // MARK: Device motion 측정
-        // Device motion을 수집 가능한지 확인
-        guard motionManager.isDeviceMotionAvailable else {
-            print("Device motion data is not available")
-            return
-        }
-        
-        // 모션 갱신 주기 설정 (10Hz)
-        motionManager.deviceMotionUpdateInterval = 0.1
-        // Device motion 업데이트 받기 시작
-        motionManager.startDeviceMotionUpdates(to: .main) { (deviceMotion: CMDeviceMotion?, error: Error?) in
-            guard let data = deviceMotion, error == nil else {
-                print("Failed to get device motion data: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            // 필요한 센서값 불러오기
-            let acceleration = data.userAcceleration
-            
-            accX = acceleration.x
-            accY = acceleration.y
-            accZ = acceleration.z
-            //
-            
-            accXs.append(accX)
-            accYs.append(accY)
-            accZs.append(accZ)
-            
-            //            accXs.removeAll()
-            //            accYs.removeAll()
-            //            accZs.removeAll()
-            
-            //            print(accX)
-            //            print(accY)
-            //            print(accZ)
-        }
-    }
-    
-    func stopRecordingDeviceMotion() {
-        motionManager.stopDeviceMotionUpdates()
-    }
-    
-    
-    struct AccData {
-        var accel_x: String
-        var accel_y: String
-        var accel_z: String
-    }
-    
-    func generateTXT() -> URL {
-        var fileURL: URL!
-        // heading of CSV file.
-        let heading = "accel_х, accel_у, accel_z\n"
-        
-        // file rows
-        let rows = accDatas.map { "\($0.accel_x),\($0.accel_y),\($0.accel_z)" }
-        
-        // rows to string data
-        let stringData = heading + rows.joined(separator: "\n")
-        
-        do {
-            let path = try FileManager.default.url(for: .documentDirectory,
-                                                   in: .allDomainsMask,
-                                                   appropriateFor: nil,
-                                                   create: false)
-            
-            fileURL = path.appendingPathComponent("accdata.txt")
-            
-            // append string data to file
-            try stringData.write(to: fileURL, atomically: true , encoding: .utf8)
-            print(fileURL!)
-            
-        } catch {
-            print("error generating csv file")
-        }
-        return fileURL
-    }
 }
