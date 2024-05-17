@@ -7,14 +7,22 @@
 
 import SwiftUI
 import AVKit
+import Firebase
 
 @main
 struct watchConDemoApp: App {
+    @StateObject var userStore = UserStore()
+    
+    init() {
+            FirebaseApp.configure()
+        }
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(userStore)
         }
     }
 }

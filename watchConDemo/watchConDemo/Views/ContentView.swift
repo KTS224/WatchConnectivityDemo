@@ -8,15 +8,45 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var userStore: UserStore
+    
     var body: some View {
         VStack {
-            HeartRateView()
+            TabView {
+                  HomeView()
+                    .tabItem {
+                      Image(systemName: "timer")
+                      Text("타이머")
+                    }
+                  StatisticsView()
+                    .tabItem {
+                      Image(systemName: "chart.xyaxis.line")
+                      Text("분석")
+                    }
+                RankingView()
+                  .tabItem {
+                    Image(systemName: "medal.fill")
+                    Text("랭킹")
+                  }
+                  .badge(10)
+                MyPageView()
+                  .tabItem {
+                    Image(systemName: "person.fill")
+                    Text("내정보")
+                  }
+                }
+                .font(.headline)
+        }
+        .onAppear {
+            // 임시
+            userStore.updateUserTime()
         }
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(UserStore())
 }
 
 
