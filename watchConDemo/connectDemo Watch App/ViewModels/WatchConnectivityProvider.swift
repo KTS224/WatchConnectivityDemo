@@ -26,12 +26,108 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     
     @Published var heartRate = 0
     @Published var heartRates: [Int] = []
+    @Published var spentTime = 0
+    @Published var isSleepHR = false
+    
     @Published var accX: Double = 0
     @Published var accY: Double = 0
     @Published var accZ: Double = 0
     @Published var accXs: [Double] = []
     @Published var accYs: [Double] = []
     @Published var accZs: [Double] = []
+    @Published var accFuncCoolTime = 0
+    @Published var isSleepAcc = false
+    
+    func sleepDetectBy(heartRates: [Int]) -> Bool {
+        guard let lastIndex = heartRates.last else {
+            accFuncCoolTime = 0
+            print("func sleepDetectBy heartRate optional Error")
+            return false
+        }
+        
+        var sleepCount: Int = heartRates[lastIndex - 60 ..< lastIndex].map { $0 <= 55 }.count
+        
+        if sleepCount > 50 {
+            accFuncCoolTime += 1
+            return true
+        }
+        
+        accFuncCoolTime = 0
+        return false
+    }
+    
+    func sleepDetectByAcceleration(x: [Double], y: [Double], z: [Double]) -> Bool {
+        guard x.count < 3100 || y.count < 3100 || z.count < 3100 else {
+            print("func sleepDetectByAcceleration index Error")
+            return false
+        }
+        
+        // x, y, z 값 최근 3000개만 사용
+        var x = Array(x[x.count - 3000 ..< x.count])
+        var y = Array(y[y.count - 3000 ..< y.count])
+        var z = Array(z[z.count - 3000 ..< z.count])
+        
+        // Function to calculate net acceleration
+        func netAccel(x: Double, y: Double, z: Double) -> Double {
+            return pow(x * x + y * y + z * z, 0.50)
+        }
+
+        // Example arrays for acc_x, acc_y, acc_z
+        let acc_x: [Double] = x // Fill with your data
+        let acc_y: [Double] = y // Fill with your data
+        let acc_z: [Double] = z // Fill with your data
+
+        // Calculate net acceleration
+        var acc_net: [Double] = []
+        for i in 0..<acc_x.count {
+            acc_net.append(netAccel(x: acc_x[i], y: acc_y[i], z: acc_z[i]))
+        }
+        
+        // Constants
+        let window_size = 60
+        let c1 = 0.04
+
+        // Calculate standard deviation in the window and correct values if necessary
+        var std_dev_list: [Double] = []
+        for i in stride(from: 0, to: acc_net.count, by: window_size) {
+            let end = min(i + window_size, acc_net.count)
+            let window = Array(acc_net[i..<end])
+            let omega = window.standardDeviation()
+            std_dev_list.append(omega)
+            
+            if omega < c1 {
+                for j in i..<end {
+                    acc_net[j] = 0
+                }
+            }
+        }
+        
+        // Constants for large window
+        let window_size_large = 240
+        let c2 = 0.7
+
+        // Calculate zero ratio in the large window and correct values if necessary
+        for i in stride(from: 0, to: acc_net.count, by: window_size_large) {
+            let end = min(i + window_size_large, acc_net.count)
+            let window_large = Array(acc_net[i..<end])
+            let zero_count = window_large.filter { $0 == 0 }.count
+            let zero_ratio = Double(zero_count) / Double(window_large.count)
+            
+            if zero_ratio > c2 {
+                for j in i..<end {
+                    acc_net[j] = 0
+                }
+            }
+        }
+        
+        let accZeroCount = acc_net.map { $0 == 0 }.count
+        
+        if accZeroCount >= 2700 {
+            print("func sleepDetectByAcceleration SLEEP DETECT")
+            return true
+        }
+        return false
+    }
     
     func startRecordingDeviceMotion() {
         // MARK: Device motion 측정

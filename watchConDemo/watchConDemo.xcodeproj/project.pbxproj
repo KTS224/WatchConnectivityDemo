@@ -168,7 +168,6 @@
 				EBC330012BC68DD500FB5220 /* watchConDemo.entitlements */,
 				EB30F0952BC4424500719A30 /* watchConDemoApp.swift */,
 				EBCA93372BC6F15F0021097C /* PhoneTimer.swift */,
-				EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */,
 				EBBD0EC72BF206040067B227 /* Color+.swift */,
 				EBE8AF942BE118AB005271AC /* ViewModels */,
 				EB50DC262BCE7145007FB23A /* Models */,
@@ -222,6 +221,7 @@
 				EBBD0EE22BF2A54F0067B227 /* DayCompareForChart.swift */,
 				EBBD0EDE2BF29EDD0067B227 /* WeekHistoryForChart.swift */,
 				EBB6C5D62BCE5C530034737E /* UserInfo.swift */,
+				EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */,
 				EBBD0EDC2BF24C4E0067B227 /* UserForRankingInfo.swift */,
 			);
 			path = Models;

@@ -12,7 +12,7 @@ import CoreMotion
 
 ///
 /// 1. 워치 가속도 배열로 받기 // 10Hz
-/// 2. 워치 심박수 배열로 받기 // 1Hz
+/// 2. 워치 심박수 배열로 받기 // 1Hz -> 60개 중 55개가 55미만이면 수면이다.
 ///
 
 struct ContentView: View {
@@ -154,13 +154,35 @@ struct ContentView: View {
                     
 //                    self.model.session.transferUserInfo(["heartRate" : Int(healthKitManager.heartRate), "deviceMotionX": model.accX, "deviceMotionY": model.accY, "deviceMotionZ": model.accZ])
 //                    print(Int(healthKitManager.heartRate))
+                    model.spentTime += 1
                     model.heartRates.append(healthKitManager.heartRate)
                     print("HR 의 개수: \(model.heartRates.count)")
+                    
+                    // 5분뒤부터 수면판단 시작
+                    if model.spentTime > 330 {
+                        // 심박수로 수면판단
+                        model.isSleepHR = model.sleepDetectBy(heartRates: model.heartRates)
+                        
+                        if model.isSleepHR && model.accFuncCoolTime % 10 == 1 {
+                            model.isSleepAcc = model.sleepDetectByAcceleration(x: model.accXs, y: model.accYs, z: model.accZs)
+                        }
+                        
+                        if model.isSleepHR && model.isSleepAcc {
+                            print("최종 수면 감지.")
+                            self.timerForHaptic = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                                //MARK: 진동 메서드 rawValue:로 진동 어디까지 세지는지 아직 모름.
+                                WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
+                            }
+                        }
+                    }
                 }
             }
             .onDisappear {
                 showPulses.toggle()
                 timer?.invalidate()
+                model.spentTime = 0
+                
+                // TODO: HR, acc 배열 초기화 해야함
             }
         } else {
             HStack {
