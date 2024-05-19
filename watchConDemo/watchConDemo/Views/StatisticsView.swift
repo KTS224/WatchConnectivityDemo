@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct StatisticsView: View {
-    @EnvironmentObject var userStore: UserStore
+//    @EnvironmentObject var userStore: UserStore
     
     var body: some View {
         ZStack {
@@ -363,9 +363,9 @@ struct StatisticsView: View {
                 
             }
         }
-        .onAppear {
-            userStore.fetchMyData()
-        }
+//        .onAppear {
+//            userStore.fetchMyData()
+//        }
     }
     
     func giveCurrentTime() -> String {
@@ -389,5 +389,5 @@ struct StatisticsView: View {
 
 #Preview {
     StatisticsView()
-        .environmentObject(UserStore())
+//        .environmentObject(UserStore())
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var userStore: UserStore
+//    @EnvironmentObject var userStore: UserStore
     
     var body: some View {
         VStack {
@@ -23,12 +23,12 @@ struct ContentView: View {
                       Image(systemName: "chart.xyaxis.line")
                       Text("분석")
                     }
-                RankingView()
-                  .tabItem {
-                    Image(systemName: "medal.fill")
-                    Text("랭킹")
-                  }
-                  .badge(10)
+//                RankingView()
+//                  .tabItem {
+//                    Image(systemName: "medal.fill")
+//                    Text("랭킹")
+//                  }
+//                  .badge(10)
                 MyPageView()
                   .tabItem {
                     Image(systemName: "person.fill")
@@ -39,14 +39,14 @@ struct ContentView: View {
         }
         .onAppear {
             // 임시
-            userStore.updateUserTime()
+//            userStore.updateUserTime()
         }
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(UserStore())
+//        .environmentObject(UserStore())
 }
 
 

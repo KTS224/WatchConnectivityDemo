@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct UserForRankingInfo: Identifiable, Hashable {
-    let id = UUID()
-    var uuid: String
-    var nickName: String
-    var spentTime: Int
-    var isStuding: Bool
-}
+//struct UserForRankingInfo: Identifiable, Hashable {
+//    let id = UUID()
+//    var uuid: String
+//    var nickName: String
+//    var spentTime: Int
+//    var isStuding: Bool
+//}

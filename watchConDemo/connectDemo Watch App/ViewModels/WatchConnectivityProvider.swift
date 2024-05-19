@@ -56,35 +56,7 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
         return sleepCount >= 50
     }
     
-    
-//    func sleepDetectBy(heartRates: [Int]) -> Bool {
-//        guard let lastIndex = heartRates.last else {
-//            accFuncCoolTime = 0
-//            print("func sleepDetectBy heartRate optional Error")
-//            return false
-//        }
-//        
-//        let sleepFilter = heartRates[lastIndex - 60 ..< lastIndex].filter { $0 <= 80 }
-//        let sleepCount: Int = sleepFilter.count
-//        
-//        print("sleepFilter \(sleepFilter)")
-//        print("sleepCount : \(sleepCount)")
-//        
-//        if sleepCount > 50 {
-//            accFuncCoolTime += 1
-//            print("## 심박수로 수면 감지됨 ##")
-//            return true
-//        }
-//        
-//        accFuncCoolTime = 0
-//        return false
-//    }
-    
     func sleepDetectByAcceleration(x: [Double], y: [Double], z: [Double]) -> Bool {
-//        guard x.count < 3100 || y.count < 3100 || z.count < 3100 else {
-//            print("func sleepDetectByAcceleration index Error")
-//            return false
-//        }
         print("가속도 탐지 시작")
         // x, y, z 값 최근 3000개만 사용
         let x = Array(x[x.count - 3000 ..< x.count])

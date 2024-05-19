@@ -7,23 +7,23 @@
 
 import Foundation
 
-class UserInfo {
-    static let shared = UserInfo()
-    
-    var id: UUID?
-    var pitch: [Double]?
-    var row: [Double]?
-    var yaw: [Double]?
-    var accelerationX: [Double]?
-    var accelerationY: [Double]?
-    var accelerationZ: [Double]?
-    var accelerationAvr: [Double]?
-    var heartRates: [Int]?
-    var heartRateAvr: [Double]?
-    var currentTime: [TimeInterval]?
-    
-    private init() { }
-}
+//class UserInfo {
+//    static let shared = UserInfo()
+//    
+//    var id: UUID?
+//    var pitch: [Double]?
+//    var row: [Double]?
+//    var yaw: [Double]?
+//    var accelerationX: [Double]?
+//    var accelerationY: [Double]?
+//    var accelerationZ: [Double]?
+//    var accelerationAvr: [Double]?
+//    var heartRates: [Int]?
+//    var heartRateAvr: [Double]?
+//    var currentTime: [TimeInterval]?
+//    
+//    private init() { }
+//}
 
 //struct User: Identifiable {
 //    var id: UUID = UUID()

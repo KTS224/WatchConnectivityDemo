@@ -28,6 +28,9 @@ struct ContentView: View {
     @State private var pulsedHearts: [HeartParticle] = []
     
     @State private var 끄는버튼생기기 = false
+    
+    @State private var 진동on: Bool = false
+    
     var body: some View {
         
         // 탐지중 뷰
@@ -105,9 +108,6 @@ struct ContentView: View {
                 })
             }
         }
-        .onDisappear {
-            timerForHaptic?.invalidate()
-        }
         
         // MARK: - 측정하기 / 종료하기 버튼
         Button(action: {
@@ -123,9 +123,6 @@ struct ContentView: View {
                 model.buttonDisabled = false
                 model.buttonText = "측정하기"
                 print("종료버튼 누름")
-                
-                
-                
             } else {
                 model.sendButtonPressed()
                 healthKitManager.startWorkout()
@@ -137,7 +134,9 @@ struct ContentView: View {
         }) {
             Text(model.buttonText)
         }
-//        .disabled(model.buttonDisabled)
+        .onAppear {
+            stopHaptic()
+        }
         
         // MARK: -
         
@@ -151,12 +150,7 @@ struct ContentView: View {
             .onAppear {
                 print("워치 측정중 버튼 누름.")
                 
-                // MARK: self.model.session.sendMessage 한번에 2개 이상 하면 업데이트가 0-value 로 시간차가 이상하게 되는 오류가 있음.
                 self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                    // MARK: 앱 실행중에 전송 매서드
-                    //                self.model.session.sendMessage(["heartRate" : Int(self.heartRate ?? 100)], replyHandler: nil) { error in
-                    //                    print(error.localizedDescription)
-                    //                }
                     // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
                     
 //                    self.model.session.transferUserInfo(["heartRate" : Int(healthKitManager.heartRate), "deviceMotionX": model.accX, "deviceMotionY": model.accY, "deviceMotionZ": model.accZ])
@@ -178,11 +172,7 @@ struct ContentView: View {
                             print("최종 수면 감지.")
 //                            WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
                             
-                            // TODO: 종료하기 버튼 누르면 진동 멈추게 하기
-                            self.timerForHaptic = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                                //MARK: 진동 메서드 rawValue:로 진동 어디까지 세지는지 아직 모름.
-                                WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
-                            }
+                            startHaptic()
                             self.끄는버튼생기기 = true
                         }
                     }
@@ -215,86 +205,27 @@ struct ContentView: View {
                 model.spentTime = 0
                 model.isSleepHR = false
                 model.isSleepAcc = false
-                self.timerForHaptic?.invalidate()
-                timerForHaptic = nil
                 끄는버튼생기기 = false
+                stopHaptic()
             } label: {
                 Text("끄는버튼")
             }
         }
     }
     
-    func playHapticTimer() {
-        
+    private func startHaptic() {
+        if !진동on {
+            진동on = true
+            timerForHaptic = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                WKInterfaceDevice.current().play(.notification)
+            }
+        }
     }
     
-    func sleepDetectByAcceleration(x: [Double], y: [Double], z: [Double]) {
-        // Function to calculate net acceleration
-        func netAccel(x: Double, y: Double, z: Double) -> Double {
-            return pow(x * x + y * y + z * z, 0.50)
-        }
-
-        // Example arrays for acc_x, acc_y, acc_z
-        let acc_x: [Double] = x // Fill with your data
-        let acc_y: [Double] = y // Fill with your data
-        let acc_z: [Double] = z // Fill with your data
-
-        // Calculate net acceleration
-        var acc_net: [Double] = []
-        for i in 0..<acc_x.count {
-            acc_net.append(netAccel(x: acc_x[i], y: acc_y[i], z: acc_z[i]))
-        }
-        
-
-        // Constants
-        let window_size = 100
-        let c1 = 0.04
-
-        // Calculate standard deviation in the window and correct values if necessary
-        var std_dev_list: [Double] = []
-        for i in stride(from: 0, to: acc_net.count, by: window_size) {
-            let end = min(i + window_size, acc_net.count)
-            let window = Array(acc_net[i..<end])
-            let omega = window.standardDeviation()
-            std_dev_list.append(omega)
-            
-            if omega < c1 {
-                for j in i..<end {
-                    acc_net[j] = 0
-                }
-            }
-        }
-
-//        //acc_net 으로 그리기
-        
-        // Constants for large window
-        let window_size_large = 400
-        let c2 = 0.8
-
-        // Calculate zero ratio in the large window and correct values if necessary
-        for i in stride(from: 0, to: acc_net.count, by: window_size_large) {
-            let end = min(i + window_size_large, acc_net.count)
-            let window_large = Array(acc_net[i..<end])
-            let zero_count = window_large.filter { $0 == 0 }.count
-            let zero_ratio = Double(zero_count) / Double(window_large.count)
-            
-            if zero_ratio > c2 {
-                for j in i..<end {
-                    acc_net[j] = 0
-                }
-            }
-        }
-        
-        //acc_net 으로 그리기
-    }
-}
-
-extension Array where Element == Double {
-    // Extension to calculate standard deviation
-    func standardDeviation() -> Double {
-        let mean = self.reduce(0, +) / Double(self.count)
-        let variance = self.reduce(0) { $0 + ($1 - mean) * ($1 - mean) } / Double(self.count)
-        return sqrt(variance)
+    private func stopHaptic() {
+        진동on = false
+        timerForHaptic?.invalidate()
+        timerForHaptic = nil
     }
 }
 

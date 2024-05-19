@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		EB0A309C2BF9F6CF00BCC8F9 /* NewStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A309B2BF9F6CF00BCC8F9 /* NewStatisticsView.swift */; };
 		EB0A309E2BFA0A9E00BCC8F9 /* WatchSleepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A309D2BFA0A9E00BCC8F9 /* WatchSleepData.swift */; };
-		EB0A30A02BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A309F2BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift */; };
+		EB0A30A22BFA683800BCC8F9 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A30A12BFA683800BCC8F9 /* Array+.swift */; };
+		EB0A30A42BFA68D200BCC8F9 /* TESTVIEW.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A30A32BFA68D200BCC8F9 /* TESTVIEW.swift */; };
 		EB292D4A2BCD6EA700E7E319 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */; };
 		EB30F0962BC4424500719A30 /* watchConDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0952BC4424500719A30 /* watchConDemoApp.swift */; };
 		EB30F0982BC4424500719A30 /* HeartRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0972BC4424500719A30 /* HeartRateView.swift */; };
@@ -22,9 +23,7 @@
 		EB30F0BC2BC445AF00719A30 /* ConnectivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */; };
 		EB685E8C2BCBD73100F0FA20 /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB685E8B2BCBD73100F0FA20 /* AudioSessionManager.swift */; };
 		EB6FDD232BCAC87B00015E1D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD222BCAC87B00015E1D /* ContentView.swift */; };
-		EB6FDD272BCAF92A00015E1D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD262BCAF92A00015E1D /* LoginView.swift */; };
 		EB869C772BE9620700DD4E03 /* PulseHeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB869C762BE9620700DD4E03 /* PulseHeartView.swift */; };
-		EB9E352B2BE38414002016FC /* TESTSleepDetectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */; };
 		EBB6C5D72BCE5C530034737E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB6C5D62BCE5C530034737E /* UserInfo.swift */; };
 		EBBD0EC42BF2041D0067B227 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0EC32BF2041D0067B227 /* HomeView.swift */; };
 		EBBD0EC62BF204930067B227 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0EC52BF204930067B227 /* StatisticsView.swift */; };
@@ -32,10 +31,6 @@
 		EBBD0ECA2BF213BA0067B227 /* RankingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0EC92BF213BA0067B227 /* RankingView.swift */; };
 		EBBD0ECC2BF21DC70067B227 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0ECB2BF21DC70067B227 /* MyPageView.swift */; };
 		EBBD0ECE2BF22BFD0067B227 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBBD0ECD2BF22BFD0067B227 /* GoogleService-Info.plist */; };
-		EBBD0ED12BF22CF10067B227 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = EBBD0ED02BF22CF10067B227 /* FirebaseDatabase */; };
-		EBBD0ED32BF22CF10067B227 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EBBD0ED22BF22CF10067B227 /* FirebaseDatabaseSwift */; };
-		EBBD0ED52BF22CF10067B227 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EBBD0ED42BF22CF10067B227 /* FirebaseFirestore */; };
-		EBBD0ED72BF22CF10067B227 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EBBD0ED62BF22CF10067B227 /* FirebaseFirestoreSwift */; };
 		EBBD0ED92BF240C90067B227 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0ED82BF240C90067B227 /* UserStore.swift */; };
 		EBBD0EDD2BF24C4E0067B227 /* UserForRankingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0EDC2BF24C4E0067B227 /* UserForRankingInfo.swift */; };
 		EBBD0EDF2BF29EDD0067B227 /* WeekHistoryForChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0EDE2BF29EDD0067B227 /* WeekHistoryForChart.swift */; };
@@ -48,7 +43,6 @@
 		EBCA93412BC6F9330021097C /* Knock.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EBCA93402BC6F9330021097C /* Knock.mp3 */; };
 		EBCA93432BC6F93B0021097C /* Click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EBCA93422BC6F93B0021097C /* Click.mp3 */; };
 		EBCA93462BC6FC1C0021097C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93452BC6FC1C0021097C /* ContentView.swift */; };
-		EBF7BE8E2BD7B4A70032F0CF /* CSVTESTVIEW.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF7BE8D2BD7B4A70032F0CF /* CSVTESTVIEW.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,7 +72,8 @@
 /* Begin PBXFileReference section */
 		EB0A309B2BF9F6CF00BCC8F9 /* NewStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStatisticsView.swift; sourceTree = "<group>"; };
 		EB0A309D2BFA0A9E00BCC8F9 /* WatchSleepData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSleepData.swift; sourceTree = "<group>"; };
-		EB0A309F2BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HAPTICTESTVIEW.swift; sourceTree = "<group>"; };
+		EB0A30A12BFA683800BCC8F9 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
+		EB0A30A32BFA68D200BCC8F9 /* TESTVIEW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTVIEW.swift; sourceTree = "<group>"; };
 		EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		EB30F0922BC4424500719A30 /* watchConDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchConDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB30F0952BC4424500719A30 /* watchConDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchConDemoApp.swift; sourceTree = "<group>"; };
@@ -92,9 +87,7 @@
 		EB30F0BB2BC445AF00719A30 /* ConnectivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityProvider.swift; sourceTree = "<group>"; };
 		EB685E8B2BCBD73100F0FA20 /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		EB6FDD222BCAC87B00015E1D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		EB6FDD262BCAF92A00015E1D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		EB869C762BE9620700DD4E03 /* PulseHeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseHeartView.swift; sourceTree = "<group>"; };
-		EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTSleepDetectView.swift; sourceTree = "<group>"; };
 		EBB6C5D62BCE5C530034737E /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		EBBD0EC32BF2041D0067B227 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EBBD0EC52BF204930067B227 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
@@ -118,7 +111,6 @@
 		EBCA93422BC6F93B0021097C /* Click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Click.mp3; sourceTree = "<group>"; };
 		EBCA93442BC6F9C20021097C /* connectDemo-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "connectDemo-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		EBCA93452BC6FC1C0021097C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		EBF7BE8D2BD7B4A70032F0CF /* CSVTESTVIEW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVTESTVIEW.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,10 +118,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBBD0ED32BF22CF10067B227 /* FirebaseDatabaseSwift in Frameworks */,
-				EBBD0ED12BF22CF10067B227 /* FirebaseDatabase in Frameworks */,
-				EBBD0ED52BF22CF10067B227 /* FirebaseFirestore in Frameworks */,
-				EBBD0ED72BF22CF10067B227 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,10 +185,11 @@
 				EBCA93442BC6F9C20021097C /* connectDemo-Watch-App-Info.plist */,
 				EBC330022BC68DF300FB5220 /* connectDemo Watch App.entitlements */,
 				EB30F0AB2BC442B200719A30 /* connectDemoApp.swift */,
+				EB0A30A12BFA683800BCC8F9 /* Array+.swift */,
 				EB6FDD252BCAF90F00015E1D /* Views */,
 				EBAAC04C2BF75BBD0023551E /* ViewModels */,
-				EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */,
 				EB0A309D2BFA0A9E00BCC8F9 /* WatchSleepData.swift */,
+				EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */,
 				EBCA93352BC6EC9D0021097C /* WatchTimer.swift */,
 				EB30F0AF2BC442B400719A30 /* Assets.xcassets */,
 				EB30F0B12BC442B400719A30 /* Preview Content */,
@@ -232,13 +221,10 @@
 			isa = PBXGroup;
 			children = (
 				EB0A309B2BF9F6CF00BCC8F9 /* NewStatisticsView.swift */,
-				EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */,
-				EBF7BE8D2BD7B4A70032F0CF /* CSVTESTVIEW.swift */,
 				EBBD0EC32BF2041D0067B227 /* HomeView.swift */,
 				EBBD0EC52BF204930067B227 /* StatisticsView.swift */,
 				EBBD0EC92BF213BA0067B227 /* RankingView.swift */,
 				EBBD0ECB2BF21DC70067B227 /* MyPageView.swift */,
-				EB6FDD262BCAF92A00015E1D /* LoginView.swift */,
 				EB30F0972BC4424500719A30 /* HeartRateView.swift */,
 				EBCA93452BC6FC1C0021097C /* ContentView.swift */,
 			);
@@ -249,8 +235,8 @@
 			isa = PBXGroup;
 			children = (
 				EB6FDD222BCAC87B00015E1D /* ContentView.swift */,
+				EB0A30A32BFA68D200BCC8F9 /* TESTVIEW.swift */,
 				EB869C762BE9620700DD4E03 /* PulseHeartView.swift */,
-				EB0A309F2BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -291,10 +277,6 @@
 			);
 			name = watchConDemo;
 			packageProductDependencies = (
-				EBBD0ED02BF22CF10067B227 /* FirebaseDatabase */,
-				EBBD0ED22BF22CF10067B227 /* FirebaseDatabaseSwift */,
-				EBBD0ED42BF22CF10067B227 /* FirebaseFirestore */,
-				EBBD0ED62BF22CF10067B227 /* FirebaseFirestoreSwift */,
 			);
 			productName = watchConDemo;
 			productReference = EB30F0922BC4424500719A30 /* watchConDemo.app */;
@@ -345,7 +327,6 @@
 			);
 			mainGroup = EB30F0892BC4424500719A30;
 			packageReferences = (
-				EBBD0ECF2BF22CF10067B227 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = EB30F0932BC4424500719A30 /* Products */;
 			projectDirPath = "";
@@ -397,14 +378,11 @@
 				EBBD0EC82BF206040067B227 /* Color+.swift in Sources */,
 				EBBD0EC42BF2041D0067B227 /* HomeView.swift in Sources */,
 				EBBD0ED92BF240C90067B227 /* UserStore.swift in Sources */,
-				EB6FDD272BCAF92A00015E1D /* LoginView.swift in Sources */,
 				EBBD0EC62BF204930067B227 /* StatisticsView.swift in Sources */,
-				EBF7BE8E2BD7B4A70032F0CF /* CSVTESTVIEW.swift in Sources */,
 				EBCA933F2BC6F9070021097C /* HapticManager.swift in Sources */,
 				EBB6C5D72BCE5C530034737E /* UserInfo.swift in Sources */,
 				EBCA93382BC6F15F0021097C /* PhoneTimer.swift in Sources */,
 				EB30F0BC2BC445AF00719A30 /* ConnectivityProvider.swift in Sources */,
-				EB9E352B2BE38414002016FC /* TESTSleepDetectView.swift in Sources */,
 				EBCA933D2BC6F8F80021097C /* SoundManager.swift in Sources */,
 				EB685E8C2BCBD73100F0FA20 /* AudioSessionManager.swift in Sources */,
 				EBBD0ECC2BF21DC70067B227 /* MyPageView.swift in Sources */,
@@ -416,13 +394,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB30F0AC2BC442B200719A30 /* connectDemoApp.swift in Sources */,
+				EB0A30A22BFA683800BCC8F9 /* Array+.swift in Sources */,
 				EB0A309E2BFA0A9E00BCC8F9 /* WatchSleepData.swift in Sources */,
 				EB292D4A2BCD6EA700E7E319 /* HealthKitManager.swift in Sources */,
-				EB0A30A02BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift in Sources */,
 				EB6FDD232BCAC87B00015E1D /* ContentView.swift in Sources */,
 				EB869C772BE9620700DD4E03 /* PulseHeartView.swift in Sources */,
 				EBCA93342BC6EC6A0021097C /* WatchConnectivityProvider.swift in Sources */,
 				EBCA93362BC6EC9D0021097C /* WatchTimer.swift in Sources */,
+				EB0A30A42BFA68D200BCC8F9 /* TESTVIEW.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,7 +468,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -546,7 +525,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -587,9 +566,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.KTS224.watchConDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -624,9 +607,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.KTS224.watchConDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -727,40 +714,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		EBBD0ECF2BF22CF10067B227 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.25.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		EBBD0ED02BF22CF10067B227 /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EBBD0ECF2BF22CF10067B227 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
-		};
-		EBBD0ED22BF22CF10067B227 /* FirebaseDatabaseSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EBBD0ECF2BF22CF10067B227 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabaseSwift;
-		};
-		EBBD0ED42BF22CF10067B227 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EBBD0ECF2BF22CF10067B227 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-		EBBD0ED62BF22CF10067B227 /* FirebaseFirestoreSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EBBD0ECF2BF22CF10067B227 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestoreSwift;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EB30F08A2BC4424500719A30 /* Project object */;
 }

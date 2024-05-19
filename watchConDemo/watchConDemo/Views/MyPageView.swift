@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyPageView: View {
-    @EnvironmentObject var userStore: UserStore
+//    @EnvironmentObject var userStore: UserStore
     @State private var isWatchModeOn = true
     @State private var isAirPodsModeOn = false
     
@@ -27,22 +27,22 @@ struct MyPageView: View {
                 }
                 
                 VStack {
-                    HStack {
-                        Text("\(userStore.nickName)")
-                            .foregroundStyle(.yellow)
-                        Spacer()
-                    }
-                    .padding([.top, .leading, .trailing])
-                    .padding(.bottom, 1)
-                    
-                    HStack {
-                        Text("\(userStore.uuid)")
-                            .foregroundStyle(.gray)
-                            .font(.system(size: 10))
-                        Spacer()
-                    }
-                    .padding([.bottom, .leading, .trailing])
-                    
+//                    HStack {
+//                        Text("\(userStore.nickName)")
+//                            .foregroundStyle(.yellow)
+//                        Spacer()
+//                    }
+//                    .padding([.top, .leading, .trailing])
+//                    .padding(.bottom, 1)
+//                    
+//                    HStack {
+//                        Text("\(userStore.uuid)")
+//                            .foregroundStyle(.gray)
+//                            .font(.system(size: 10))
+//                        Spacer()
+//                    }
+//                    .padding([.bottom, .leading, .trailing])
+//                    
                 }
                 .padding()
                 .overlay {
@@ -113,9 +113,9 @@ struct MyPageView: View {
                 Spacer()
             }
         }
-        .onAppear {
-            userStore.fetchMyData()
-        }
+//        .onAppear {
+//            userStore.fetchMyData()
+//        }
     }
     
     func getDeviceUUID() -> String {
@@ -125,5 +125,5 @@ struct MyPageView: View {
 
 #Preview {
     MyPageView()
-        .environmentObject(UserStore())
+//        .environmentObject(UserStore())
 }

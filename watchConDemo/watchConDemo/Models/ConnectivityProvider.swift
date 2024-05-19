@@ -24,7 +24,7 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
 //    @Published var allDeviceMotionY: [Double] = []
 //    @Published var allDeviceMotionZ: [Double] = []
 //    
-    let userInfo = UserInfo.shared
+//    let userInfo = UserInfo.shared
     
     @Published var buttonEnabled: Bool = false
     
@@ -113,7 +113,7 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
 //            self.allDeviceMotionZ.append(deviceMotionZ)
         }
         // didReceiveUserInfo userInfo: [String : Any]랑 다른 싱글톤패턴의 userInfo이다.
-        self.userInfo.heartRates = allHeartRate
+//        self.userInfo.heartRates = allHeartRate
 //        print(self.userInfo.heartRates)
         // TODO: print 안찍힘. -> self.userInfo.heartRates = allHeartRate  작동하는지 알아볼 필요 있음.
 //        print("받았다 x: \(self.deviceMotionX)")

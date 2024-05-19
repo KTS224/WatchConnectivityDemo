@@ -11,8 +11,7 @@ import SwiftUI
 struct connectDemo_Watch_AppApp: App {
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-            HAPTICTESTVIEW()
+            ContentView()
         }
     }
 }
