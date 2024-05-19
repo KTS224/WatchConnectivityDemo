@@ -38,34 +38,58 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     @Published var accFuncCoolTime = 0
     @Published var isSleepAcc = false
     
+    @Published var watchSleepData: [WatchSleepData] = []
+    
     func sleepDetectBy(heartRates: [Int]) -> Bool {
-        guard let lastIndex = heartRates.last else {
-            accFuncCoolTime = 0
-            print("func sleepDetectBy heartRate optional Error")
+        guard heartRates.count >= 60 else {
+            print("수면 분석을 하기에는 심박수 데이터가 충분하지 않습니다.")
             return false
         }
         
-        var sleepCount: Int = heartRates[lastIndex - 60 ..< lastIndex].map { $0 <= 55 }.count
+        let startIndex = heartRates.count - 60
+        let sleepFilter = heartRates[startIndex ..< heartRates.count].filter { $0 <= 150 }
+        let sleepCount: Int = sleepFilter.count
         
-        if sleepCount > 50 {
-            accFuncCoolTime += 1
-            return true
-        }
+        print("sleepFilter \(sleepFilter)")
+        print("sleepCount : \(sleepCount)")
         
-        accFuncCoolTime = 0
-        return false
+        return sleepCount >= 50
     }
     
+    
+//    func sleepDetectBy(heartRates: [Int]) -> Bool {
+//        guard let lastIndex = heartRates.last else {
+//            accFuncCoolTime = 0
+//            print("func sleepDetectBy heartRate optional Error")
+//            return false
+//        }
+//        
+//        let sleepFilter = heartRates[lastIndex - 60 ..< lastIndex].filter { $0 <= 80 }
+//        let sleepCount: Int = sleepFilter.count
+//        
+//        print("sleepFilter \(sleepFilter)")
+//        print("sleepCount : \(sleepCount)")
+//        
+//        if sleepCount > 50 {
+//            accFuncCoolTime += 1
+//            print("## 심박수로 수면 감지됨 ##")
+//            return true
+//        }
+//        
+//        accFuncCoolTime = 0
+//        return false
+//    }
+    
     func sleepDetectByAcceleration(x: [Double], y: [Double], z: [Double]) -> Bool {
-        guard x.count < 3100 || y.count < 3100 || z.count < 3100 else {
-            print("func sleepDetectByAcceleration index Error")
-            return false
-        }
-        
+//        guard x.count < 3100 || y.count < 3100 || z.count < 3100 else {
+//            print("func sleepDetectByAcceleration index Error")
+//            return false
+//        }
+        print("가속도 탐지 시작")
         // x, y, z 값 최근 3000개만 사용
-        var x = Array(x[x.count - 3000 ..< x.count])
-        var y = Array(y[y.count - 3000 ..< y.count])
-        var z = Array(z[z.count - 3000 ..< z.count])
+        let x = Array(x[x.count - 3000 ..< x.count])
+        let y = Array(y[y.count - 3000 ..< y.count])
+        let z = Array(z[z.count - 3000 ..< z.count])
         
         // Function to calculate net acceleration
         func netAccel(x: Double, y: Double, z: Double) -> Double {
@@ -119,14 +143,21 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
                 }
             }
         }
-        
-        let accZeroCount = acc_net.map { $0 == 0 }.count
-        
-        if accZeroCount >= 2700 {
+        print("acc_net : \(acc_net)")
+        let accZeroCount = acc_net.filter { $0 == 0 }.count
+        print("accZeroCount: \(accZeroCount) \(giveCurrentTime())")
+        if accZeroCount >= 2000 {
             print("func sleepDetectByAcceleration SLEEP DETECT")
             return true
         }
         return false
+    }
+    
+    func giveCurrentTime() -> String {
+        var formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        var current_date_string = formatter.string(from: Date())
+        return current_date_string
     }
     
     func startRecordingDeviceMotion() {
@@ -156,7 +187,7 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
             accYs.append(accY)
             accZs.append(accZ)
             
-            print("가속도 x 개수: \(accXs.count)")
+//            print("가속도 x 개수: \(accXs.count)")
         }
     }
     
@@ -166,7 +197,7 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     
     func sendButtonPressed() {
         buttonDisabled = true
-        buttonText = "측정중"
+        buttonText = "종료하기"
         session.sendMessage(["buttonPressed": true], replyHandler: nil, errorHandler: { error in
             print("Error sending message: \(error)")
         })
@@ -180,15 +211,15 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
             }
         }
         
-        if let hapticPermisson = message["hapticPermisson"] as? Bool, hapticPermisson {
-            DispatchQueue.main.async {
-                self.isHapticOn = true
-            }
-        } else if let hapticPermisson = message["hapticPermisson"] as? Bool, !hapticPermisson {
-            DispatchQueue.main.async {
-                self.isHapticOn = false
-            }
-        }
+//        if let hapticPermisson = message["hapticPermisson"] as? Bool, hapticPermisson {
+//            DispatchQueue.main.async {
+//                self.isHapticOn = true
+//            }
+//        } else if let hapticPermisson = message["hapticPermisson"] as? Bool, !hapticPermisson {
+//            DispatchQueue.main.async {
+//                self.isHapticOn = false
+//            }
+//        }
     }
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {

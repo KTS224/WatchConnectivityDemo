@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB0A309C2BF9F6CF00BCC8F9 /* NewStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A309B2BF9F6CF00BCC8F9 /* NewStatisticsView.swift */; };
+		EB0A309E2BFA0A9E00BCC8F9 /* WatchSleepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A309D2BFA0A9E00BCC8F9 /* WatchSleepData.swift */; };
+		EB0A30A02BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A309F2BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift */; };
 		EB292D4A2BCD6EA700E7E319 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */; };
 		EB30F0962BC4424500719A30 /* watchConDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0952BC4424500719A30 /* watchConDemoApp.swift */; };
 		EB30F0982BC4424500719A30 /* HeartRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0972BC4424500719A30 /* HeartRateView.swift */; };
@@ -20,10 +23,8 @@
 		EB685E8C2BCBD73100F0FA20 /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB685E8B2BCBD73100F0FA20 /* AudioSessionManager.swift */; };
 		EB6FDD232BCAC87B00015E1D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD222BCAC87B00015E1D /* ContentView.swift */; };
 		EB6FDD272BCAF92A00015E1D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD262BCAF92A00015E1D /* LoginView.swift */; };
-		EB6FDD292BCAFD7800015E1D /* DetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FDD282BCAFD7800015E1D /* DetectionView.swift */; };
 		EB869C772BE9620700DD4E03 /* PulseHeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB869C762BE9620700DD4E03 /* PulseHeartView.swift */; };
 		EB9E352B2BE38414002016FC /* TESTSleepDetectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */; };
-		EBAAC0502BF75C500023551E /* UserStoreWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAAC04F2BF75C500023551E /* UserStoreWatch.swift */; };
 		EBB6C5D72BCE5C530034737E /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB6C5D62BCE5C530034737E /* UserInfo.swift */; };
 		EBBD0EC42BF2041D0067B227 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0EC32BF2041D0067B227 /* HomeView.swift */; };
 		EBBD0EC62BF204930067B227 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD0EC52BF204930067B227 /* StatisticsView.swift */; };
@@ -42,7 +43,6 @@
 		EBCA93342BC6EC6A0021097C /* WatchConnectivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93332BC6EC6A0021097C /* WatchConnectivityProvider.swift */; };
 		EBCA93362BC6EC9D0021097C /* WatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93352BC6EC9D0021097C /* WatchTimer.swift */; };
 		EBCA93382BC6F15F0021097C /* PhoneTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA93372BC6F15F0021097C /* PhoneTimer.swift */; };
-		EBCA933B2BC6F8D10021097C /* AccelerometerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA933A2BC6F8D10021097C /* AccelerometerView.swift */; };
 		EBCA933D2BC6F8F80021097C /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA933C2BC6F8F80021097C /* SoundManager.swift */; };
 		EBCA933F2BC6F9070021097C /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCA933E2BC6F9070021097C /* HapticManager.swift */; };
 		EBCA93412BC6F9330021097C /* Knock.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EBCA93402BC6F9330021097C /* Knock.mp3 */; };
@@ -76,6 +76,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EB0A309B2BF9F6CF00BCC8F9 /* NewStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStatisticsView.swift; sourceTree = "<group>"; };
+		EB0A309D2BFA0A9E00BCC8F9 /* WatchSleepData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSleepData.swift; sourceTree = "<group>"; };
+		EB0A309F2BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HAPTICTESTVIEW.swift; sourceTree = "<group>"; };
 		EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		EB30F0922BC4424500719A30 /* watchConDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchConDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB30F0952BC4424500719A30 /* watchConDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchConDemoApp.swift; sourceTree = "<group>"; };
@@ -90,10 +93,8 @@
 		EB685E8B2BCBD73100F0FA20 /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		EB6FDD222BCAC87B00015E1D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EB6FDD262BCAF92A00015E1D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		EB6FDD282BCAFD7800015E1D /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
 		EB869C762BE9620700DD4E03 /* PulseHeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseHeartView.swift; sourceTree = "<group>"; };
 		EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTSleepDetectView.swift; sourceTree = "<group>"; };
-		EBAAC04F2BF75C500023551E /* UserStoreWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStoreWatch.swift; sourceTree = "<group>"; };
 		EBB6C5D62BCE5C530034737E /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		EBBD0EC32BF2041D0067B227 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EBBD0EC52BF204930067B227 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
@@ -111,7 +112,6 @@
 		EBCA93352BC6EC9D0021097C /* WatchTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTimer.swift; sourceTree = "<group>"; };
 		EBCA93372BC6F15F0021097C /* PhoneTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTimer.swift; sourceTree = "<group>"; };
 		EBCA93392BC6F84C0021097C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		EBCA933A2BC6F8D10021097C /* AccelerometerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccelerometerView.swift; sourceTree = "<group>"; };
 		EBCA933C2BC6F8F80021097C /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		EBCA933E2BC6F9070021097C /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		EBCA93402BC6F9330021097C /* Knock.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Knock.mp3; sourceTree = "<group>"; };
@@ -200,6 +200,7 @@
 				EB6FDD252BCAF90F00015E1D /* Views */,
 				EBAAC04C2BF75BBD0023551E /* ViewModels */,
 				EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */,
+				EB0A309D2BFA0A9E00BCC8F9 /* WatchSleepData.swift */,
 				EBCA93352BC6EC9D0021097C /* WatchTimer.swift */,
 				EB30F0AF2BC442B400719A30 /* Assets.xcassets */,
 				EB30F0B12BC442B400719A30 /* Preview Content */,
@@ -230,7 +231,7 @@
 		EB6FDD242BCAF8FC00015E1D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EBCA933A2BC6F8D10021097C /* AccelerometerView.swift */,
+				EB0A309B2BF9F6CF00BCC8F9 /* NewStatisticsView.swift */,
 				EB9E352A2BE38414002016FC /* TESTSleepDetectView.swift */,
 				EBF7BE8D2BD7B4A70032F0CF /* CSVTESTVIEW.swift */,
 				EBBD0EC32BF2041D0067B227 /* HomeView.swift */,
@@ -238,7 +239,6 @@
 				EBBD0EC92BF213BA0067B227 /* RankingView.swift */,
 				EBBD0ECB2BF21DC70067B227 /* MyPageView.swift */,
 				EB6FDD262BCAF92A00015E1D /* LoginView.swift */,
-				EB6FDD282BCAFD7800015E1D /* DetectionView.swift */,
 				EB30F0972BC4424500719A30 /* HeartRateView.swift */,
 				EBCA93452BC6FC1C0021097C /* ContentView.swift */,
 			);
@@ -250,6 +250,7 @@
 			children = (
 				EB6FDD222BCAC87B00015E1D /* ContentView.swift */,
 				EB869C762BE9620700DD4E03 /* PulseHeartView.swift */,
+				EB0A309F2BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -258,7 +259,6 @@
 			isa = PBXGroup;
 			children = (
 				EBCA93332BC6EC6A0021097C /* WatchConnectivityProvider.swift */,
-				EBAAC04F2BF75C500023551E /* UserStoreWatch.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -392,6 +392,7 @@
 				EB30F0962BC4424500719A30 /* watchConDemoApp.swift in Sources */,
 				EBBD0EDD2BF24C4E0067B227 /* UserForRankingInfo.swift in Sources */,
 				EBCA93462BC6FC1C0021097C /* ContentView.swift in Sources */,
+				EB0A309C2BF9F6CF00BCC8F9 /* NewStatisticsView.swift in Sources */,
 				EBBD0EDF2BF29EDD0067B227 /* WeekHistoryForChart.swift in Sources */,
 				EBBD0EC82BF206040067B227 /* Color+.swift in Sources */,
 				EBBD0EC42BF2041D0067B227 /* HomeView.swift in Sources */,
@@ -402,9 +403,7 @@
 				EBCA933F2BC6F9070021097C /* HapticManager.swift in Sources */,
 				EBB6C5D72BCE5C530034737E /* UserInfo.swift in Sources */,
 				EBCA93382BC6F15F0021097C /* PhoneTimer.swift in Sources */,
-				EB6FDD292BCAFD7800015E1D /* DetectionView.swift in Sources */,
 				EB30F0BC2BC445AF00719A30 /* ConnectivityProvider.swift in Sources */,
-				EBCA933B2BC6F8D10021097C /* AccelerometerView.swift in Sources */,
 				EB9E352B2BE38414002016FC /* TESTSleepDetectView.swift in Sources */,
 				EBCA933D2BC6F8F80021097C /* SoundManager.swift in Sources */,
 				EB685E8C2BCBD73100F0FA20 /* AudioSessionManager.swift in Sources */,
@@ -417,11 +416,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB30F0AC2BC442B200719A30 /* connectDemoApp.swift in Sources */,
+				EB0A309E2BFA0A9E00BCC8F9 /* WatchSleepData.swift in Sources */,
 				EB292D4A2BCD6EA700E7E319 /* HealthKitManager.swift in Sources */,
+				EB0A30A02BFA1E6800BCC8F9 /* HAPTICTESTVIEW.swift in Sources */,
 				EB6FDD232BCAC87B00015E1D /* ContentView.swift in Sources */,
 				EB869C772BE9620700DD4E03 /* PulseHeartView.swift in Sources */,
 				EBCA93342BC6EC6A0021097C /* WatchConnectivityProvider.swift in Sources */,
-				EBAAC0502BF75C500023551E /* UserStoreWatch.swift in Sources */,
 				EBCA93362BC6EC9D0021097C /* WatchTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -27,7 +27,10 @@ struct ContentView: View {
     @State private var showPulses: Bool = false
     @State private var pulsedHearts: [HeartParticle] = []
     
+    @State private var 끄는버튼생기기 = false
     var body: some View {
+        
+        // 탐지중 뷰
         VStack {
             ZStack {
                 if showPulses {
@@ -99,38 +102,42 @@ struct ContentView: View {
                         Text("BPM")
                             .foregroundStyle(.red.gradient)
                     })
-                    
-                    Text(showPulses ? "평균 \(healthKitManager.heartRate-6) BPM" : "...")
-                        .font(.caption2)
-                        .foregroundStyle(.gray)
                 })
             }
-        }
-        .onAppear {
-//            self.timerForHaptic = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-//                //MARK: 진동 메서드 rawValue:로 진동 어디까지 세지는지 아직 모름.
-////                    WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
-//                if model.isHapticOn {
-//                    WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
-//                }
-//            }
         }
         .onDisappear {
             timerForHaptic?.invalidate()
         }
         
-        // MARK: - 측정하기 / 측정중 버튼
+        // MARK: - 측정하기 / 종료하기 버튼
         Button(action: {
-            model.sendButtonPressed()
-            healthKitManager.startWorkout()
-            showPulses.toggle()
+//            model.sendButtonPressed()
+//            healthKitManager.startWorkout()
+//            showPulses.toggle()
+//            
+//            model.startRecordingDeviceMotion()
+//            print("Device motion 업데이트 시작!!!")
             
-            model.startRecordingDeviceMotion()
-            print("Device motion 업데이트 시작!!!")
+            if model.buttonText == "종료하기" {
+                showPulses.toggle()
+                model.buttonDisabled = false
+                model.buttonText = "측정하기"
+                print("종료버튼 누름")
+                
+                
+                
+            } else {
+                model.sendButtonPressed()
+                healthKitManager.startWorkout()
+                showPulses.toggle()
+                
+                model.startRecordingDeviceMotion()
+                print("Device motion 업데이트 시작!!!")
+            }
         }) {
             Text(model.buttonText)
         }
-        .disabled(model.buttonDisabled)
+//        .disabled(model.buttonDisabled)
         
         // MARK: -
         
@@ -159,20 +166,24 @@ struct ContentView: View {
                     print("HR 의 개수: \(model.heartRates.count)")
                     
                     // 5분뒤부터 수면판단 시작
-                    if model.spentTime > 330 {
+                    if model.spentTime > 320 {
                         // 심박수로 수면판단
                         model.isSleepHR = model.sleepDetectBy(heartRates: model.heartRates)
                         
-                        if model.isSleepHR && model.accFuncCoolTime % 10 == 1 {
+                        if model.isSleepHR {
                             model.isSleepAcc = model.sleepDetectByAcceleration(x: model.accXs, y: model.accYs, z: model.accZs)
                         }
                         
                         if model.isSleepHR && model.isSleepAcc {
                             print("최종 수면 감지.")
+//                            WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
+                            
+                            // TODO: 종료하기 버튼 누르면 진동 멈추게 하기
                             self.timerForHaptic = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                                 //MARK: 진동 메서드 rawValue:로 진동 어디까지 세지는지 아직 모름.
                                 WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
                             }
+                            self.끄는버튼생기기 = true
                         }
                     }
                 }
@@ -181,8 +192,6 @@ struct ContentView: View {
                 showPulses.toggle()
                 timer?.invalidate()
                 model.spentTime = 0
-                
-                // TODO: HR, acc 배열 초기화 해야함
             }
         } else {
             HStack {
@@ -200,6 +209,23 @@ struct ContentView: View {
                 timer = nil
             }
         }
+        
+        if 끄는버튼생기기 {
+            Button {
+                model.spentTime = 0
+                model.isSleepHR = false
+                model.isSleepAcc = false
+                self.timerForHaptic?.invalidate()
+                timerForHaptic = nil
+                끄는버튼생기기 = false
+            } label: {
+                Text("끄는버튼")
+            }
+        }
+    }
+    
+    func playHapticTimer() {
+        
     }
     
     func sleepDetectByAcceleration(x: [Double], y: [Double], z: [Double]) {
