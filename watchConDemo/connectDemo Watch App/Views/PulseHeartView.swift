@@ -13,9 +13,10 @@ struct HeartParticle: Identifiable {
 
 struct PulseHeartView: View {
     @State private var startAnimation = false
+    var imageName: String
     
     var body: some View {
-        Image(systemName: "brain.head.profile")
+        Image(systemName: "\(imageName)")
             .font(.largeTitle)
             .foregroundStyle(.green)
             .scaleEffect(startAnimation ? 4 : 1)

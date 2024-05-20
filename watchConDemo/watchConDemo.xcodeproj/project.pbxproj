@@ -11,6 +11,7 @@
 		EB0A309E2BFA0A9E00BCC8F9 /* WatchSleepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A309D2BFA0A9E00BCC8F9 /* WatchSleepData.swift */; };
 		EB0A30A22BFA683800BCC8F9 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A30A12BFA683800BCC8F9 /* Array+.swift */; };
 		EB0A30A42BFA68D200BCC8F9 /* TESTVIEW.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A30A32BFA68D200BCC8F9 /* TESTVIEW.swift */; };
+		EB0A30A62BFA892300BCC8F9 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0A30A52BFA892300BCC8F9 /* CalendarView.swift */; };
 		EB292D4A2BCD6EA700E7E319 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */; };
 		EB30F0962BC4424500719A30 /* watchConDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0952BC4424500719A30 /* watchConDemoApp.swift */; };
 		EB30F0982BC4424500719A30 /* HeartRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30F0972BC4424500719A30 /* HeartRateView.swift */; };
@@ -74,6 +75,7 @@
 		EB0A309D2BFA0A9E00BCC8F9 /* WatchSleepData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSleepData.swift; sourceTree = "<group>"; };
 		EB0A30A12BFA683800BCC8F9 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		EB0A30A32BFA68D200BCC8F9 /* TESTVIEW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTVIEW.swift; sourceTree = "<group>"; };
+		EB0A30A52BFA892300BCC8F9 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		EB292D492BCD6EA700E7E319 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		EB30F0922BC4424500719A30 /* watchConDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchConDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB30F0952BC4424500719A30 /* watchConDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchConDemoApp.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 			children = (
 				EB0A309B2BF9F6CF00BCC8F9 /* NewStatisticsView.swift */,
 				EBBD0EC32BF2041D0067B227 /* HomeView.swift */,
+				EB0A30A52BFA892300BCC8F9 /* CalendarView.swift */,
 				EBBD0EC52BF204930067B227 /* StatisticsView.swift */,
 				EBBD0EC92BF213BA0067B227 /* RankingView.swift */,
 				EBBD0ECB2BF21DC70067B227 /* MyPageView.swift */,
@@ -379,6 +382,7 @@
 				EBBD0EC42BF2041D0067B227 /* HomeView.swift in Sources */,
 				EBBD0ED92BF240C90067B227 /* UserStore.swift in Sources */,
 				EBBD0EC62BF204930067B227 /* StatisticsView.swift in Sources */,
+				EB0A30A62BFA892300BCC8F9 /* CalendarView.swift in Sources */,
 				EBCA933F2BC6F9070021097C /* HapticManager.swift in Sources */,
 				EBB6C5D72BCE5C530034737E /* UserInfo.swift in Sources */,
 				EBCA93382BC6F15F0021097C /* PhoneTimer.swift in Sources */,

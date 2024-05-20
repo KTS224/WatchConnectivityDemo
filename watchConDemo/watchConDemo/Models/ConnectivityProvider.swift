@@ -25,9 +25,16 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
 //    @Published var allDeviceMotionZ: [Double] = []
 //    
 //    let userInfo = UserInfo.shared
+
+    // 받아오는 데이터
+    @Published var 졸음횟수 = 0 //ㅇ
+    @Published var 첫수면 = "" //ㅇ
+    @Published var 오늘의공부시간 = 0 //ㅇ
+    @Published var 공부시작시간 = "" //ㅇ
+    @Published var 공부끝시간 = ""  //ㅇ
+    @Published var 첫수면경과시간 = 0
     
     @Published var buttonEnabled: Bool = false
-    
     
     
     init(session: WCSession = .default) {
@@ -97,7 +104,16 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     // 다른 기기의 세션으로부터 transferUserInfo() 메서드로 데이터를 받았을 때 호출되는 메서드
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
         DispatchQueue.main.async {
-            self.heartRate = userInfo["heartRate"] as? Int ?? 0
+//            self.heartRate = userInfo["heartRate"] as? Int ?? 0
+            self.졸음횟수 = userInfo["졸음횟수"] as? Int ?? 0
+            self.첫수면 = userInfo["첫수면"] as? String ?? ""
+            self.오늘의공부시간 = userInfo["오늘의공부시간"] as? Int ?? 0
+            self.공부시작시간 = userInfo["공부시작시간"] as? String ?? ""
+            self.공부끝시간 = userInfo["공부끝시간"] as? String ?? ""
+            self.첫수면경과시간 =  userInfo["첫수면경과시간"] as? Int ?? 0
+            print("오늘의공부시간 : \(self.오늘의공부시간)")
+            print("첫수면 : \(self.첫수면)")
+            
 //            self.deviceMotionX = userInfo["deviceMotionX"] as? Double ?? 0
 //            self.deviceMotionY = userInfo["deviceMotionY"] as? Double ?? 0
 //            self.deviceMotionZ = userInfo["deviceMotionZ"] as? Double ?? 0

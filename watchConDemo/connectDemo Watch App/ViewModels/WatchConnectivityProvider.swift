@@ -35,11 +35,18 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     @Published var accXs: [Double] = []
     @Published var accYs: [Double] = []
     @Published var accZs: [Double] = []
-    @Published var accFuncCoolTime = 0
     @Published var isSleepAcc = false
     
-    @Published var watchSleepData: [WatchSleepData] = []
     
+    // 넘겨줘야하는 데이터
+    @Published var 졸음횟수 = 0 //ㅇ
+    @Published var 첫수면 = "" //ㅇ
+    @Published var 오늘의공부시간 = 0 //ㅇ
+    @Published var 공부시작시간 = "" //ㅇ
+    @Published var 공부끝시간 = ""  //ㅇ
+    @Published var 첫수면경과시간 = 0
+    
+    // MARK: - HR 수면 탐지 메서드
     func sleepDetectBy(heartRates: [Int]) -> Bool {
         guard heartRates.count >= 60 else {
             print("수면 분석을 하기에는 심박수 데이터가 충분하지 않습니다.")
@@ -56,6 +63,7 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
         return sleepCount >= 50
     }
     
+    // MARK: - Acc 수면 탐지 메서드
     func sleepDetectByAcceleration(x: [Double], y: [Double], z: [Double]) -> Bool {
         print("가속도 탐지 시작")
         // x, y, z 값 최근 3000개만 사용
@@ -118,7 +126,7 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
         print("acc_net : \(acc_net)")
         let accZeroCount = acc_net.filter { $0 == 0 }.count
         print("accZeroCount: \(accZeroCount) \(giveCurrentTime())")
-        if accZeroCount >= 2000 {
+        if accZeroCount >= 1000 {
             print("func sleepDetectByAcceleration SLEEP DETECT")
             return true
         }
@@ -126,12 +134,13 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     }
     
     func giveCurrentTime() -> String {
-        var formatter = DateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm:ss"
-        var current_date_string = formatter.string(from: Date())
+        let current_date_string = formatter.string(from: Date())
         return current_date_string
     }
     
+    // MARK: - Acc 측정 메서드
     func startRecordingDeviceMotion() {
         // MARK: Device motion 측정
         // Device motion을 수집 가능한지 확인
@@ -158,41 +167,22 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
             accXs.append(accX)
             accYs.append(accY)
             accZs.append(accZ)
-            
-//            print("가속도 x 개수: \(accXs.count)")
         }
     }
     
+    // MARK: - Acc 측정 정지 메서드
     func stopRecordingDeviceMotion() {
         motionManager.stopDeviceMotionUpdates()
     }
     
-    func sendButtonPressed() {
-        buttonDisabled = true
-        buttonText = "종료하기"
-        session.sendMessage(["buttonPressed": true], replyHandler: nil, errorHandler: { error in
-            print("Error sending message: \(error)")
-        })
-    }
-    
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        if let reset = message["reset"] as? Bool, reset {
-            DispatchQueue.main.async {
-                self.buttonText = "측정하기"
-                self.buttonDisabled = false
-            }
-        }
-        
-//        if let hapticPermisson = message["hapticPermisson"] as? Bool, hapticPermisson {
+//    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+//        if let reset = message["reset"] as? Bool, reset {
 //            DispatchQueue.main.async {
-//                self.isHapticOn = true
-//            }
-//        } else if let hapticPermisson = message["hapticPermisson"] as? Bool, !hapticPermisson {
-//            DispatchQueue.main.async {
-//                self.isHapticOn = false
+//                self.buttonText = "측정하기"
+//                self.buttonDisabled = false
 //            }
 //        }
-    }
+//    }
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         
@@ -215,7 +205,13 @@ class WatchConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
 //    // 다른 기기의 세션으로부터 transferUserInfo() 메서드로 데이터를 받았을 때 호출되는 메서드
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
         DispatchQueue.main.async {
-            self.heartRate = userInfo["heartRate"] as? Int ?? 0
+//            self.heartRate = userInfo["heartRate"] as? Int ?? 0
+//            self.졸음횟수 =
+//            self.첫수면 = "" //ㅇ
+//            self.오늘의공부시간 = 0 //ㅇ
+//            self.공부시작시간 = "" //ㅇ
+//            self.공부끝시간 = ""  //ㅇ
+            
             
             // MARK: 디바이스 모션을 계속 넘겨줄 필요가 없어서 주석처리함
 //            self.deviceMotionX = userInfo["deviceMotionX"] as? Double ?? 0

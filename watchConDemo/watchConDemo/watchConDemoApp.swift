@@ -15,7 +15,8 @@ struct watchConDemoApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            StatisticsView()
 //                .environmentObject(userStore)
         }
     }

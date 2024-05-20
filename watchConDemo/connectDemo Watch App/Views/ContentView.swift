@@ -27,13 +27,31 @@ struct ContentView: View {
     @State private var showPulses: Bool = false
     @State private var pulsedHearts: [HeartParticle] = []
     
-    @State private var 끄는버튼생기기 = false
-    
+    @State private var 유저수면탐지 = false
     @State private var 진동on: Bool = false
     
+    // MARK: 공부 시간 측정 타이머 변수
+    @State private var isRunning = false
+    @State private var 일시정지on = false
+    @State private var 경과시간 = 0.0
+    let 공부시간측정타이머 = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
-        
-        // 탐지중 뷰
+        HStack {
+            Button(action: {
+                model.첫수면경과시간 = Int(경과시간)
+                model.첫수면 = 현재시간출력()
+                model.졸음횟수 += 1
+            }, label: {
+                Text("졸음횟수 +")
+            })
+            Button(action: {
+                model.졸음횟수 = 0
+            }, label: {
+                Text("졸음횟수 = 0")
+            })
+        }
+        // Pulse 뷰
         VStack {
             ZStack {
                 if showPulses {
@@ -50,7 +68,7 @@ struct ContentView: View {
                             
                         } symbols: {
                             ForEach(pulsedHearts) {
-                                PulseHeartView()
+                                PulseHeartView(imageName: 유저수면탐지 ? "moon.zzz" : "shared.with.you")
                                     .id($0.id)
                             }
                         }
@@ -77,70 +95,108 @@ struct ContentView: View {
                             
                         } symbols: {
                             ForEach(pulsedHearts) {
-                                PulseHeartView()
+                                PulseHeartView(imageName: 유저수면탐지 ? "moon.zzz" : "shared.with.you")
                                     .id($0.id)
                             }
                         }
                     }
                 }
                 
-                
-                Image(systemName: "brain.head.profile")
+                Image(systemName: 유저수면탐지 ? "moon.zzz" : "shared.with.you")
                     .font(.title)
-                    .foregroundStyle(.green.gradient).opacity(0.7)
+                    .foregroundStyle(유저수면탐지 ? .indigo : 일시정지on ? .gray : .green)
                     .symbolEffect(.bounce, options: !beatAnimation ? .default : .repeating.speed(1), value: beatAnimation)
             }
             .overlay(alignment: .bottomLeading) {
-                VStack(alignment: .leading, spacing: 5, content: {
-                    Text(showPulses ? "공부중" : "멈춤")
-                        .font(.title3.bold())
-                        .foregroundStyle(showPulses ? .white : .gray)
-                    
-                    HStack(alignment: .bottom, spacing: 6, content: {
-                        Text(showPulses ? "\(healthKitManager.heartRate)" : "...")
-                            .font(.system(size: 45))
-                            .contentTransition(.numericText(value: Double(88)))
-                            .foregroundStyle(.white)
-                        
-                        Text("BPM")
-                            .foregroundStyle(.red.gradient)
-                    })
-                })
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(유저수면탐지 ? "수면이 감지되었습니다." : showPulses && !일시정지on ? "시간기록중" : "멈춤")
+                        .bold()
+                        .foregroundStyle(유저수면탐지 ? .red : showPulses && !일시정지on ? .white.opacity(0.8) : .gray)
+                        .padding()
+                    Spacer()
+                    Text("지속시간 \(formatTime(경과시간))")
+                        .foregroundStyle(유저수면탐지 ? .gray : .white)
+                        .font(.system(size: 15, weight: .bold, design: .monospaced))
+                        .contentTransition(.numericText(value: Double(88)))
+                        .padding()
+                }
             }
         }
-        
+        // 뇌 반짝이는 뷰 끝
         // MARK: - 측정하기 / 종료하기 버튼
-        Button(action: {
-//            model.sendButtonPressed()
-//            healthKitManager.startWorkout()
-//            showPulses.toggle()
-//            
-//            model.startRecordingDeviceMotion()
-//            print("Device motion 업데이트 시작!!!")
-            
-            if model.buttonText == "종료하기" {
-                showPulses.toggle()
-                model.buttonDisabled = false
-                model.buttonText = "측정하기"
-                print("종료버튼 누름")
-            } else {
-                model.sendButtonPressed()
-                healthKitManager.startWorkout()
-                showPulses.toggle()
+        HStack {
+            if !유저수면탐지 {
+                if isRunning {
+                    Button {
+                        if !일시정지on {
+                            model.spentTime = 0
+                            model.isSleepHR = false
+                            model.isSleepAcc = false
+                            유저수면탐지 = false
+                            stopHaptic()
+                        }
+                        
+                        일시정지on.toggle()
+                        showPulses.toggle()
+                    } label: {
+                        Text(일시정지on ? "계속하기" : "일시정지")
+                    }
+                }
                 
-                model.startRecordingDeviceMotion()
-                print("Device motion 업데이트 시작!!!")
+                Button(action: {
+                    
+                    
+                    if model.buttonText == "종료하기" {
+                        showPulses = false
+                        model.buttonText = "측정하기"
+                        print("종료버튼 누름")
+                        model.공부끝시간 = 현재시간출력()
+                        model.오늘의공부시간 = Int(경과시간)
+                        // TODO: 데이터 폰으로 전송하고 0으로 초기화하기
+                        // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
+                        self.model.session.transferUserInfo(["졸음횟수": model.졸음횟수, "첫수면": model.첫수면, "오늘의공부시간": model.오늘의공부시간, "공부시작시간": model.공부시작시간, "공부끝시간": model.공부끝시간, "첫수면경과시간" : model.첫수면경과시간])
+                        model.졸음횟수 = 0
+                    } else {
+                        model.buttonText = "종료하기"
+                        showPulses = true
+                        healthKitManager.startWorkout()
+                        model.startRecordingDeviceMotion()
+                        print("Device motion 업데이트 시작!!!")
+                        model.공부시작시간 = 현재시간출력()
+                    }
+                    
+                    if isRunning {
+                        stopTimer()
+                    } else {
+                        startTimer()
+                    }
+                }) {
+                    Text(model.buttonText)
+                }
+                .buttonStyle(BorderedButtonStyle(tint: isRunning ? Color.red : Color.green))
+                .onAppear {
+                    stopHaptic()
+                }
+                .onReceive(공부시간측정타이머) { _ in
+                    if self.isRunning && !self.일시정지on {
+                        self.경과시간 += 1
+                    }
+                }
+            } else {
+                Button {
+                    model.spentTime = 0
+                    model.isSleepHR = false
+                    model.isSleepAcc = false
+                    유저수면탐지 = false
+                    stopHaptic()
+                } label: {
+                    Text("알람끄기")
+                }
             }
-        }) {
-            Text(model.buttonText)
-        }
-        .onAppear {
-            stopHaptic()
         }
         
-        // MARK: -
-        
-        if model.buttonDisabled {
+        // MARK: - 측정하기 버튼 눌렀을 경우
+        if showPulses {
             VStack {
                 HStack {
                     Rectangle()
@@ -149,15 +205,13 @@ struct ContentView: View {
             }
             .onAppear {
                 print("워치 측정중 버튼 누름.")
-                
+                // MARK: 심박수 측정 타이머 가동
                 self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                    // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
-                    
-//                    self.model.session.transferUserInfo(["heartRate" : Int(healthKitManager.heartRate), "deviceMotionX": model.accX, "deviceMotionY": model.accY, "deviceMotionZ": model.accZ])
 //                    print(Int(healthKitManager.heartRate))
                     model.spentTime += 1
                     model.heartRates.append(healthKitManager.heartRate)
                     print("HR 의 개수: \(model.heartRates.count)")
+                    print("현재 HR: \(healthKitManager.heartRate)")
                     
                     // 5분뒤부터 수면판단 시작
                     if model.spentTime > 320 {
@@ -169,17 +223,19 @@ struct ContentView: View {
                         }
                         
                         if model.isSleepHR && model.isSleepAcc {
-                            print("최종 수면 감지.")
-//                            WKInterfaceDevice.current().play(WKHapticType(rawValue: 40)!)
-                            
+                            if !유저수면탐지 {
+                                model.첫수면경과시간 = Int(경과시간)
+                                model.첫수면 = 현재시간출력()
+                                model.졸음횟수 += 1
+                            }
+                            print("####################최종 수면 감지############################")
                             startHaptic()
-                            self.끄는버튼생기기 = true
+                            유저수면탐지 = true
                         }
                     }
                 }
             }
             .onDisappear {
-                showPulses.toggle()
                 timer?.invalidate()
                 model.spentTime = 0
             }
@@ -189,30 +245,18 @@ struct ContentView: View {
                     .frame(width: 0, height: 0)
             }
             .onAppear {
-                print("onappear healthKitManager.stopWorkout()")
                 healthKitManager.stopWorkout()
-
                 model.stopRecordingDeviceMotion()
+                print("onappear healthKitManager.stopWorkout()")
                 print("Device motion 업데이트 종료!!!")
-
                 timer?.invalidate()
                 timer = nil
             }
         }
-        
-        if 끄는버튼생기기 {
-            Button {
-                model.spentTime = 0
-                model.isSleepHR = false
-                model.isSleepAcc = false
-                끄는버튼생기기 = false
-                stopHaptic()
-            } label: {
-                Text("끄는버튼")
-            }
-        }
     }
     
+    
+    // MARK: - 진동 메서드 부분
     private func startHaptic() {
         if !진동on {
             진동on = true
@@ -226,6 +270,39 @@ struct ContentView: View {
         진동on = false
         timerForHaptic?.invalidate()
         timerForHaptic = nil
+    }
+    
+    private func startTimer() {
+        isRunning = true
+        일시정지on = false
+    }
+    
+    private func stopTimer() {
+        isRunning = false
+        일시정지on = false
+        경과시간 = 0.0
+    }
+    
+//    private func formatTime(_ interval: TimeInterval) -> String {
+//        let minutes = Int(interval) / 60
+//        let seconds = Int(interval) % 60
+//        return String(format: "%02d:%02d", minutes, seconds)
+//    }
+    
+    func formatTime(_ 시간: Double) -> String {
+        let 시간 = Int(시간)
+        let 시 = 시간 / 3600
+        let 분 = (시간 % 3600) / 60
+        let 초 = 시간 % 60
+        
+        return String(format: "%02d:%02d:%02d", 시, 분, 초)
+    }
+    
+    func 현재시간출력() -> String {
+        var formatter_time = DateFormatter()
+        formatter_time.dateFormat = "HH:mm"
+        var current_time_string = formatter_time.string(from: Date())
+        return current_time_string
     }
 }
 
