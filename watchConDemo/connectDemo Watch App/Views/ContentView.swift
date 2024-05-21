@@ -33,24 +33,26 @@ struct ContentView: View {
     // MARK: 공부 시간 측정 타이머 변수
     @State private var isRunning = false
     @State private var 일시정지on = false
-    @State private var 경과시간 = 0.0
+    @State private var 경과시간 = 300.0
     let 공부시간측정타이머 = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        HStack {
-            Button(action: {
-                model.첫수면경과시간 = Int(경과시간)
-                model.첫수면 = 현재시간출력()
-                model.졸음횟수 += 1
-            }, label: {
-                Text("졸음횟수 +")
-            })
-            Button(action: {
-                model.졸음횟수 = 0
-            }, label: {
-                Text("졸음횟수 = 0")
-            })
-        }
+//        HStack {
+//            Button(action: {
+////                model.첫수면경과시간 = Int(경과시간)
+////                model.첫수면 = 현재시간출력()
+////                model.졸음횟수 += 1
+//                startHaptic()
+//            }, label: {
+//                Text("졸음횟수 +")
+//            })
+//            Button(action: {
+////                model.졸음횟수 = 0
+//                stopHaptic()
+//            }, label: {
+//                Text("졸음횟수 = 0")
+//            })
+//        }
         // Pulse 뷰
         VStack {
             ZStack {
@@ -180,6 +182,18 @@ struct ContentView: View {
                 .onReceive(공부시간측정타이머) { _ in
                     if self.isRunning && !self.일시정지on {
                         self.경과시간 += 1
+                        
+                        if 경과시간 == 315 {
+                            if !유저수면탐지 {
+                                model.첫수면경과시간 = Int(경과시간)
+                                model.첫수면 = 현재시간출력()
+                                model.졸음횟수 += 1
+                            }
+                            print("####################최종 수면 감지############################")
+                            startHaptic()
+                            유저수면탐지 = true
+                            경과시간 += 1
+                        }
                     }
                 }
             } else {
@@ -213,26 +227,26 @@ struct ContentView: View {
                     print("HR 의 개수: \(model.heartRates.count)")
                     print("현재 HR: \(healthKitManager.heartRate)")
                     
-                    // 5분뒤부터 수면판단 시작
-                    if model.spentTime > 320 {
-                        // 심박수로 수면판단
-                        model.isSleepHR = model.sleepDetectBy(heartRates: model.heartRates)
-                        
-                        if model.isSleepHR {
-                            model.isSleepAcc = model.sleepDetectByAcceleration(x: model.accXs, y: model.accYs, z: model.accZs)
-                        }
-                        
-                        if model.isSleepHR && model.isSleepAcc {
-                            if !유저수면탐지 {
-                                model.첫수면경과시간 = Int(경과시간)
-                                model.첫수면 = 현재시간출력()
-                                model.졸음횟수 += 1
-                            }
-                            print("####################최종 수면 감지############################")
-                            startHaptic()
-                            유저수면탐지 = true
-                        }
-                    }
+//                    // 5분뒤부터 수면판단 시작
+//                    if model.spentTime > 320 {
+//                        // 심박수로 수면판단
+//                        model.isSleepHR = model.sleepDetectBy(heartRates: model.heartRates)
+//                        
+//                        if model.isSleepHR {
+//                            model.isSleepAcc = model.sleepDetectByAcceleration(x: model.accXs, y: model.accYs, z: model.accZs)
+//                        }
+//                        
+//                        if model.isSleepHR && model.isSleepAcc {
+//                            if !유저수면탐지 {
+//                                model.첫수면경과시간 = Int(경과시간)
+//                                model.첫수면 = 현재시간출력()
+//                                model.졸음횟수 += 1
+//                            }
+//                            print("####################최종 수면 감지############################")
+//                            startHaptic()
+//                            유저수면탐지 = true
+//                        }
+//                    }
                 }
             }
             .onDisappear {
@@ -258,19 +272,31 @@ struct ContentView: View {
     
     // MARK: - 진동 메서드 부분
     private func startHaptic() {
-        if !진동on {
-            진동on = true
-            timerForHaptic = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                WKInterfaceDevice.current().play(.notification)
+            if !진동on {
+                진동on = true
+                timerForHaptic = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                    self.customHapticFeedback()
+                }
             }
         }
-    }
-    
-    private func stopHaptic() {
-        진동on = false
-        timerForHaptic?.invalidate()
-        timerForHaptic = nil
-    }
+
+        private func stopHaptic() {
+            진동on = false
+            timerForHaptic?.invalidate()
+            timerForHaptic = nil
+        }
+
+        private func customHapticFeedback() {
+            // Haptic 피드백을 여러 번 반복하여 격렬한 패턴 생성
+            let hapticTypes: [WKHapticType] = [.start, .notification, .start, .stop, .notification, .stop, .start]
+            for (index, hapticType) in hapticTypes.enumerated() {
+                DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.2) {
+                    if self.진동on { // 진동 상태가 on인 경우에만 Haptic 피드백을 발생시킴
+                        WKInterfaceDevice.current().play(hapticType)
+                    }
+                }
+            }
+        }
     
     private func startTimer() {
         isRunning = true
