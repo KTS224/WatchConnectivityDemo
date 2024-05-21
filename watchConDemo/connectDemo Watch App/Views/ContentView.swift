@@ -241,25 +241,25 @@ struct ContentView: View {
                     }
                     
                     // 5분뒤부터 수면판단 시작
-                    if model.spentTime > 320 {
-                        // 심박수로 수면판단
-                        model.isSleepHR = model.sleepDetectBy(heartRates: model.heartRates)
-                        
-                        if model.isSleepHR {
-                            model.isSleepAcc = model.sleepDetectByAcceleration(x: model.accXs, y: model.accYs, z: model.accZs)
-                        }
-                        
-                        if model.isSleepHR && model.isSleepAcc {
-                            if !유저수면탐지 {
-                                model.첫수면경과시간 = Int(경과시간)
-                                model.첫수면 = 현재시간출력()
-                                model.졸음횟수 += 1
-                            }
-                            print("####################최종 수면 감지############################")
-                            startHaptic()
-                            유저수면탐지 = true
-                        }
-                    }
+//                    if model.spentTime > 320 {
+//                        // 심박수로 수면판단
+//                        model.isSleepHR = model.sleepDetectBy(heartRates: model.heartRates)
+//                        
+//                        if model.isSleepHR {
+//                            model.isSleepAcc = model.sleepDetectByAcceleration(x: model.accXs, y: model.accYs, z: model.accZs)
+//                        }
+//                        
+//                        if model.isSleepHR && model.isSleepAcc {
+//                            if !유저수면탐지 {
+//                                model.첫수면경과시간 = Int(경과시간)
+//                                model.첫수면 = 현재시간출력()
+//                                model.졸음횟수 += 1
+//                            }
+//                            print("####################최종 수면 감지############################")
+//                            startHaptic()
+//                            유저수면탐지 = true
+//                        }
+//                    }
                 }
             }
             .onDisappear {
