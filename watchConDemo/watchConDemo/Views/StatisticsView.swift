@@ -11,23 +11,6 @@ import Charts
 struct StatisticsView: View {
     @ObservedObject var model = ConnectivityProvider()
     
-    @State private var weekHistoryForCharts = [
-        WeekHistoryForChart(datOfTheWeek: "일", spentTime: 4000),
-        WeekHistoryForChart(datOfTheWeek: "월", spentTime: 6000),
-        WeekHistoryForChart(datOfTheWeek: "화", spentTime: 100),
-        WeekHistoryForChart(datOfTheWeek: "수", spentTime: 0),
-        WeekHistoryForChart(datOfTheWeek: "목", spentTime: 0),
-        WeekHistoryForChart(datOfTheWeek: "금", spentTime: 0),
-        WeekHistoryForChart(datOfTheWeek: "토", spentTime: 0),
-    ]
-    
-//    @State private var 졸음횟수 = 0
-//    
-//    @State private var 첫수면 = ""
-//    @State private var 오늘의공부시간 = 10000
-//    @State private var 공부시작시간 = ""
-//    @State private var 공부끝시간 = ""
-    
     var body: some View {
         ZStack {
             Color.mainColor.ignoresSafeArea()
@@ -296,7 +279,7 @@ struct StatisticsView: View {
                     
                     HStack {
                         Text("하루 평균")
-                        Text("\(printSecondsToHoursMinutesSeconds((weekHistoryForCharts[0].spentTime+weekHistoryForCharts[1].spentTime+model.weekHistoryForCharts[2].spentTime+model.오늘의공부시간)/3))")
+                        Text("\(printSecondsToHoursMinutesSeconds((model.weekHistoryForCharts[0].spentTime+model.weekHistoryForCharts[1].spentTime+model.weekHistoryForCharts[2].spentTime+model.오늘의공부시간)/3))")
                             .foregroundStyle(.yellow)
                         Text("공부했어요")
                             
