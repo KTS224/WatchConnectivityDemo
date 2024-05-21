@@ -14,7 +14,7 @@ struct StatisticsView: View {
     @State private var weekHistoryForCharts = [
         WeekHistoryForChart(datOfTheWeek: "일", spentTime: 4000),
         WeekHistoryForChart(datOfTheWeek: "월", spentTime: 6000),
-        WeekHistoryForChart(datOfTheWeek: "화", spentTime: 1000),
+        WeekHistoryForChart(datOfTheWeek: "화", spentTime: 100),
         WeekHistoryForChart(datOfTheWeek: "수", spentTime: 0),
         WeekHistoryForChart(datOfTheWeek: "목", spentTime: 0),
         WeekHistoryForChart(datOfTheWeek: "금", spentTime: 0),
@@ -39,6 +39,7 @@ struct StatisticsView: View {
                         Spacer()
                     }
                     .padding(.horizontal)
+                    .padding(.top, 50)
                     
                     HStack {
                         Text("요약")
@@ -103,7 +104,7 @@ struct StatisticsView: View {
                 }
                 
                 HStack {
-                    Text(model.졸음횟수 > 0 ? "공부중 \(printSecondsToHoursMinutesSeconds(model.첫수면경과시간)) 뒤 수면이 탐지되었습니다." : "수면이 탐지되지 않았습니다.")
+                    Text(model.졸음횟수 > 0 ? "공부시작 후 \(printSecondsToHoursMinutesSeconds(model.첫수면경과시간)) 뒤 수면이 탐지되었습니다." : "수면이 탐지되지 않았습니다.")
                         .foregroundStyle(.white)
                     
                     Spacer()
@@ -295,7 +296,7 @@ struct StatisticsView: View {
                     
                     HStack {
                         Text("하루 평균")
-                        Text("\(printSecondsToHoursMinutesSeconds((weekHistoryForCharts[0].spentTime+weekHistoryForCharts[1].spentTime+weekHistoryForCharts[2].spentTime)/3))")
+                        Text("\(printSecondsToHoursMinutesSeconds((weekHistoryForCharts[0].spentTime+weekHistoryForCharts[1].spentTime+model.weekHistoryForCharts[2].spentTime+model.오늘의공부시간)/3))")
                             .foregroundStyle(.yellow)
                         Text("공부했어요")
                             
@@ -308,7 +309,7 @@ struct StatisticsView: View {
                     
                     //chart
                     Chart {
-                        ForEach(weekHistoryForCharts, id: \.datOfTheWeek) { data in
+                        ForEach(model.weekHistoryForCharts, id: \.datOfTheWeek) { data in
                             BarMark(
                                 x: .value("요일", data.datOfTheWeek),
                                 y: .value("시간", data.spentTime),
@@ -372,7 +373,7 @@ struct StatisticsView: View {
                     Text("색상의 의미는?")
                         .font(.system(size: 13))
                     Spacer()
-                    Text("5시간 이상                      ")
+                    Text("2시간 이상                      ")
                         .overlay {
                             Circle().offset(x: -70)
                                 .foregroundStyle(.blue)
@@ -381,7 +382,7 @@ struct StatisticsView: View {
                 }.foregroundStyle(.white).font(.system(size: 11)).padding(.horizontal, 25).padding(.top).padding(.bottom, 1)
                 HStack {
                     Spacer()
-                    Text("1시간 초과 3시간 미만      ")
+                    Text("1시간 초과 2시간 미만      ")
                         .overlay {
                             Circle().offset(x: -70)
                                 .foregroundStyle(.cyan)
@@ -393,10 +394,19 @@ struct StatisticsView: View {
                     Text("0시간 초과 1시간 미만      ")
                         .overlay {
                             Circle().offset(x: -70)
-                                .foregroundStyle(.white.opacity(0.7))
+                                .foregroundStyle(.cyan.opacity(0.7))
                         }
                     
                 }.foregroundStyle(.white).font(.system(size: 11)).padding(.horizontal, 25).padding(.bottom)
+//                HStack {
+//                    Spacer()
+//                    Text("수면 1회 이상 감지      ")
+//                        .overlay {
+//                            Circle().offset(x: -70)
+//                                .foregroundStyle(.red.opacity(0.5))
+//                        }
+//                    
+//                }.foregroundStyle(.white).font(.system(size: 11)).padding(.horizontal, 25).padding(.bottom)
                     
             }
         }

@@ -14,8 +14,11 @@ import CoreMotion
 /// 1. 워치 가속도 배열로 받기 // 10Hz
 /// 2. 워치 심박수 배열로 받기 // 1Hz -> 60개 중 55개가 55미만이면 수면이다.
 ///
-
+/// 심박수, 가속도 값 txt 로 받아오기
+///
+///
 struct ContentView: View {
+//    let tripData: [TripData] = []
     @StateObject private var healthKitManager = HealthKitManager()
     var model = WatchConnectivityProvider()
     @ObservedObject var myTimer = MyTimer()
@@ -33,24 +36,24 @@ struct ContentView: View {
     // MARK: 공부 시간 측정 타이머 변수
     @State private var isRunning = false
     @State private var 일시정지on = false
-    @State private var 경과시간 = 0.0
+    @State private var 경과시간 = 300.0
     let 공부시간측정타이머 = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        HStack {
-            Button(action: {
-                model.첫수면경과시간 = Int(경과시간)
-                model.첫수면 = 현재시간출력()
-                model.졸음횟수 += 1
-            }, label: {
-                Text("졸음횟수 +")
-            })
-            Button(action: {
-                model.졸음횟수 = 0
-            }, label: {
-                Text("졸음횟수 = 0")
-            })
-        }
+//        HStack {
+//            Button(action: {
+//                model.첫수면경과시간 = Int(경과시간)
+//                model.첫수면 = 현재시간출력()
+//                model.졸음횟수 += 1
+//            }, label: {
+//                Text("졸음횟수 +")
+//            })
+//            Button(action: {
+//                model.졸음횟수 = 0
+//            }, label: {
+//                Text("졸음횟수 = 0")
+//            })
+//        }
         // Pulse 뷰
         VStack {
             ZStack {
@@ -114,7 +117,7 @@ struct ContentView: View {
                         .foregroundStyle(유저수면탐지 ? .red : showPulses && !일시정지on ? .white.opacity(0.8) : .gray)
                         .padding()
                     Spacer()
-                    Text("지속시간 \(formatTime(경과시간))")
+                    Text("지속시간 \(formatTime(Double(경과시간)))")
                         .foregroundStyle(유저수면탐지 ? .gray : .white)
                         .font(.system(size: 15, weight: .bold, design: .monospaced))
                         .contentTransition(.numericText(value: Double(88)))
@@ -154,7 +157,17 @@ struct ContentView: View {
                         model.오늘의공부시간 = Int(경과시간)
                         // TODO: 데이터 폰으로 전송하고 0으로 초기화하기
                         // MARK: 백그라운드에서 전송 가능 매서드. // 백그라운드 돌리기 간헐적 오류 발생.
-                        self.model.session.transferUserInfo(["졸음횟수": model.졸음횟수, "첫수면": model.첫수면, "오늘의공부시간": model.오늘의공부시간, "공부시작시간": model.공부시작시간, "공부끝시간": model.공부끝시간, "첫수면경과시간" : model.첫수면경과시간])
+//                        self.model.session.transferUserInfo(["졸음횟수": model.졸음횟수, "첫수면": model.첫수면, "오늘의공부시간": model.오늘의공부시간, "공부시작시간": model.공부시작시간, "공부끝시간": model.공부끝시간, "첫수면경과시간" : model.첫수면경과시간])
+                        
+                        // MARK: 데모용 sendMessage (시뮬레이터 가능 메서드)
+                        self.model.session.sendMessage(["졸음횟수": model.졸음횟수, "첫수면": model.첫수면, "오늘의공부시간": model.오늘의공부시간, "공부시작시간": model.공부시작시간, "공부끝시간": model.공부끝시간, "첫수면경과시간" : model.첫수면경과시간], replyHandler: nil) { error in
+                                                /**
+                                                 다음의 상황에서 오류가 발생할 수 있음
+                                                    -> property-list 데이터 타입이 아닐 때
+                                                    -> watchOS가 reachable 상태가 아닌데 전송할 때
+                                                 */
+                                                print(error.localizedDescription)
+                                            }
                         model.졸음횟수 = 0
                     } else {
                         model.buttonText = "종료하기"
@@ -162,7 +175,7 @@ struct ContentView: View {
                         healthKitManager.startWorkout()
                         model.startRecordingDeviceMotion()
                         print("Device motion 업데이트 시작!!!")
-                        model.공부시작시간 = 현재시간출력()
+                        model.공부시작시간 = 이전시간출력()
                     }
                     
                     if isRunning {
@@ -180,6 +193,7 @@ struct ContentView: View {
                 .onReceive(공부시간측정타이머) { _ in
                     if self.isRunning && !self.일시정지on {
                         self.경과시간 += 1
+                        print(경과시간)
                     }
                 }
             } else {
@@ -212,6 +226,19 @@ struct ContentView: View {
                     model.heartRates.append(healthKitManager.heartRate)
                     print("HR 의 개수: \(model.heartRates.count)")
                     print("현재 HR: \(healthKitManager.heartRate)")
+                    
+                    
+                    if  경과시간 == 315 {
+                        if !유저수면탐지 {
+                            model.첫수면경과시간 = Int(경과시간)
+                            model.첫수면 = 현재시간출력()
+                            model.졸음횟수 += 1
+                            경과시간 += 1
+                        }
+                        print("#################### 데모 수면 감지 ############################")
+                        startHaptic()
+                        유저수면탐지 = true
+                    }
                     
                     // 5분뒤부터 수면판단 시작
                     if model.spentTime > 320 {
@@ -280,7 +307,7 @@ struct ContentView: View {
     private func stopTimer() {
         isRunning = false
         일시정지on = false
-        경과시간 = 0.0
+        경과시간 = 0
     }
     
 //    private func formatTime(_ interval: TimeInterval) -> String {
@@ -302,6 +329,20 @@ struct ContentView: View {
         var formatter_time = DateFormatter()
         formatter_time.dateFormat = "HH:mm"
         var current_time_string = formatter_time.string(from: Date())
+        return current_time_string
+    }
+    
+    // 5분 뺀시간
+    func 이전시간출력() -> String {
+        let formatter_time = DateFormatter()
+        formatter_time.dateFormat = "HH:mm"
+        
+        // 현재 시간에서 5분을 뺌
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let newDate = calendar.date(byAdding: .minute, value: -5, to: currentDate)!
+        
+        let current_time_string = formatter_time.string(from: newDate)
         return current_time_string
     }
 }

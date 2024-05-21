@@ -25,6 +25,15 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
 //    @Published var allDeviceMotionZ: [Double] = []
 //    
 //    let userInfo = UserInfo.shared
+    @Published var weekHistoryForCharts = [
+        WeekHistoryForChart(datOfTheWeek: "일", spentTime: 4000),
+        WeekHistoryForChart(datOfTheWeek: "월", spentTime: 6000),
+        WeekHistoryForChart(datOfTheWeek: "화", spentTime: 0),
+        WeekHistoryForChart(datOfTheWeek: "수", spentTime: 0),
+        WeekHistoryForChart(datOfTheWeek: "목", spentTime: 0),
+        WeekHistoryForChart(datOfTheWeek: "금", spentTime: 0),
+        WeekHistoryForChart(datOfTheWeek: "토", spentTime: 0),
+    ]
 
     // 받아오는 데이터
     @Published var 졸음횟수 = 0 //ㅇ
@@ -44,13 +53,13 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
         session.activate()
     }
     
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        if let buttonPressed = message["buttonPressed"] as? Bool, buttonPressed {
-            DispatchQueue.main.async {
-                self.buttonEnabled = true
-            }
-        }
-    }
+//    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+//        if let buttonPressed = message["buttonPressed"] as? Bool, buttonPressed {
+//            DispatchQueue.main.async {
+//                self.buttonEnabled = true
+//            }
+//        }
+//    }
     
     func sendReset() {
         if WCSession.default.isReachable {
@@ -89,22 +98,10 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
     
     //수정하기
     // 다른 기기의 세션에서 sendMessage() 메서드로 메세지를 받았을 때 호출되는 메서드
-//    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-//        DispatchQueue.main.async {
-//            // 받은 메세지에서 원하는 Key값(여기서는 "message")으로 메세지 String을 가져온다.
-//            // messageText는 Published 프로퍼티이기 때문에 DispatchQueue.main.async로 실행해줘야함
-//            self.heartRate = message["heartRate"] as? Int ?? 0
-////            self.messageText = message["message"] as? String ?? "Unknown"
-//        }
-//        
-//        allHeartRate.append(heartRate)
-//    }
-    
-    //
-    // 다른 기기의 세션으로부터 transferUserInfo() 메서드로 데이터를 받았을 때 호출되는 메서드
-    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
+    func session(_ session: WCSession, didReceiveMessage userInfo: [String : Any]) {
         DispatchQueue.main.async {
-//            self.heartRate = userInfo["heartRate"] as? Int ?? 0
+            var temp = self.오늘의공부시간
+            var sleepCountTemp = self.졸음횟수
             self.졸음횟수 = userInfo["졸음횟수"] as? Int ?? 0
             self.첫수면 = userInfo["첫수면"] as? String ?? ""
             self.오늘의공부시간 = userInfo["오늘의공부시간"] as? Int ?? 0
@@ -113,27 +110,26 @@ class ConnectivityProvider: NSObject, WCSessionDelegate, ObservableObject {
             self.첫수면경과시간 =  userInfo["첫수면경과시간"] as? Int ?? 0
             print("오늘의공부시간 : \(self.오늘의공부시간)")
             print("첫수면 : \(self.첫수면)")
-            
-//            self.deviceMotionX = userInfo["deviceMotionX"] as? Double ?? 0
-//            self.deviceMotionY = userInfo["deviceMotionY"] as? Double ?? 0
-//            self.deviceMotionZ = userInfo["deviceMotionZ"] as? Double ?? 0
+            self.오늘의공부시간 += temp
+            self.졸음횟수 += sleepCountTemp
+            self.weekHistoryForCharts[2].spentTime = self.오늘의공부시간
         }
-        
-        /// 뷰에 보여주기위한 배열 (삭제 예정)
-        /// ERROR: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
-        /// DispatchQueue.main.async { [self] in } 사용하여 오류 해결
-        DispatchQueue.main.async { [self] in
-            self.allHeartRate.append(heartRate)
-//            self.allDeviceMotionX.append(deviceMotionX)
-//            self.allDeviceMotionY.append(deviceMotionY)
-//            self.allDeviceMotionZ.append(deviceMotionZ)
-        }
-        // didReceiveUserInfo userInfo: [String : Any]랑 다른 싱글톤패턴의 userInfo이다.
-//        self.userInfo.heartRates = allHeartRate
-//        print(self.userInfo.heartRates)
-        // TODO: print 안찍힘. -> self.userInfo.heartRates = allHeartRate  작동하는지 알아볼 필요 있음.
-//        print("받았다 x: \(self.deviceMotionX)")
     }
+    
+    //
+    // 다른 기기의 세션으로부터 transferUserInfo() 메서드로 데이터를 받았을 때 호출되는 메서드
+//    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
+//        DispatchQueue.main.async {
+//            self.졸음횟수 = userInfo["졸음횟수"] as? Int ?? 0
+//            self.첫수면 = userInfo["첫수면"] as? String ?? ""
+//            self.오늘의공부시간 = userInfo["오늘의공부시간"] as? Int ?? 0
+//            self.공부시작시간 = userInfo["공부시작시간"] as? String ?? ""
+//            self.공부끝시간 = userInfo["공부끝시간"] as? String ?? ""
+//            self.첫수면경과시간 =  userInfo["첫수면경과시간"] as? Int ?? 0
+//            print("오늘의공부시간 : \(self.오늘의공부시간)")
+//            print("첫수면 : \(self.첫수면)")
+//        }
+//    }
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         

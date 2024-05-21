@@ -553,6 +553,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = watchConDemo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "쿨쿨자";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Can i get Health Records?";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Can i get Health Usage?";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Can i get Health Update?";
@@ -594,6 +595,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = watchConDemo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "쿨쿨자";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Can i get Health Records?";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Can i get Health Usage?";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Can i get Health Update?";

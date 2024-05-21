@@ -72,7 +72,7 @@ struct CalendarView: View {
                     .padding(.bottom, 20)
                     .font(.system(size: 10))
                     .foregroundStyle(.white)
-//                    .background(Color.blue.opacity(isSameDay(date1: date, date2: currentDate) ? 0.3 : 0))
+                    .background(day == 21 ? .cyan.opacity(0.7) : .clear)
                     .background(day == 20 ? .blue : .clear)
                     .background(day == 19 ? .cyan : .clear)
                     .cornerRadius(10)
